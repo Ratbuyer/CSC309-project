@@ -52,7 +52,6 @@ export default function Login() {
                 return response.json()
             }
         })
-        .catch(() => {})
         .then(json => localStorage.setItem('token', json.access))
         .catch(() => {})
 

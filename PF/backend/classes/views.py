@@ -57,9 +57,6 @@ class StudioClassView(ListAPIView):
     search_fields = (
         "classInfo__name",
         "classInfo__coach",
-        "date",
-        "start_time",
-        "end_time",
         "classInfo__keywords__name",
     )
     filterset_class = ClassEventFilter

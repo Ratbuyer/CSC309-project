@@ -11,7 +11,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { Navigate } from 'react-router-dom';
 
 function Copyright(props) {
     return (
@@ -31,10 +32,7 @@ const theme = createTheme();
 export default function Login() {
 
     const [error, setError] = useState([]);
-
-    useEffect(() => {
-
-    }, [error])
+    const[profile, setProfile] = useState(false)
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -52,10 +50,14 @@ export default function Login() {
                 return response.json()
             }
         })
-        .then(json => localStorage.setItem('token', json.access))
+        .then(json => {
+            localStorage.setItem('token', json.access)
+            setProfile(true)
+        })
         .catch(() => {})
-
     };
+
+    if (profile) return <Navigate to='/profile' />
 
     return (
         <ThemeProvider theme={theme}>
@@ -73,7 +75,7 @@ export default function Login() {
                         <LockOutlinedIcon />
                     </Avatar>
                     <Typography component="h1" variant="h5">
-                        Sign in
+                        Login
                     </Typography>
                     <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
                         <TextField
@@ -99,12 +101,12 @@ export default function Login() {
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}
                         >
-                            Sign In
+                            Submit
                         </Button>
                         <Grid container>
                             <Grid item>
                                 <Link href="/register" variant="body2">
-                                    {"Don't have an account? Sign Up"}
+                                    {"Don't have an account? Register here"}
                                 </Link>
                             </Grid>
                         </Grid>

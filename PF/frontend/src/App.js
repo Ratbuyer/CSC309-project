@@ -14,6 +14,7 @@ const MainPage = () => {
 
 
 function App() {
+
   let routes = ( <Routes>
         <Route path="/" element={<MainPage />} exact="true"></Route>
         <Route path="/studios" element={<Album />}></Route>
@@ -21,8 +22,6 @@ function App() {
         <Route path="/login" element={<Login />}></Route>
         <Route path="/register" element={<Register />}></Route>
       </Routes>)
-
-
 
 
   return (<BrowserRouter>

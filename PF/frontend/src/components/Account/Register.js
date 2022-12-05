@@ -9,7 +9,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { Navigate } from 'react-router-dom';
 
 function Copyright(props) {
     return (
@@ -26,16 +27,27 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export default function Login() {
-
-    const [error, setError] = useState([]);
+export default function Register() {
     
+    const [login, setLogin] = useState(false)
+
     const [isusernameError, setIsusernameError] = useState(false)
     const [usernameError, setUsernameError] = useState('')
 
-    useEffect(() => {
+    const [ispasswordError, setIspasswordError] = useState(false)
+    const [passwordError, setPasswordError] = useState('')
 
-    }, [error, usernameError])
+    const [ispassword2Error, setIspassword2Error] = useState(false)
+    const [password2Error, setPassword2Error] = useState('')
+
+    const [isemailError, setIsemailError] = useState(false)
+    const [emailError, setEmailError] = useState('')
+
+    const [isphoneError, setIsphoneError] = useState(false)
+    const [phoneError, setPhoneError] = useState('')
+
+    const[isavatarError, setIsavatarError] = useState(false)
+    const[avatarError, setAvatarError] = useState(false)
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -47,7 +59,7 @@ export default function Login() {
             if (response.status !== 200) {
                 return response.json()
             } else {
-
+                setLogin(true)
             }
         })
         .then(json => {
@@ -55,9 +67,43 @@ export default function Login() {
                 setUsernameError(json.username)
                 setIsusernameError(true)
             } else setIsusernameError(false)
+
+            if (json.password) {
+                setIspasswordError(true)
+                setPasswordError(json.password)
+            }   else setIspasswordError(false)
+            
+            if (json.password2 || json.passwords) {
+                setIspassword2Error(true)
+                if (json.password2) {
+                    setPassword2Error(json.password2)
+                } else if (json.passwords) {
+                    setPassword2Error(json.passwords)
+                }
+            } else setIspassword2Error(false)
+
+            if (json.email) {
+                setIsemailError(true)
+                setEmailError(json.email)
+            } else setIsemailError(false)
+
+            if (json.phone) {
+                setIsphoneError(true)
+                setPhoneError(json.phone)
+            } else setIsphoneError(false)
+
+            if (json.avatar) {
+                setIsavatarError(true)
+                setAvatarError(json.avatar)
+            } else {
+                setIsavatarError(false)
+                setAvatarError('')
+            }
         })
         .catch(() => {})
     };
+
+    if (login) return <Navigate to='/login' />
 
     return (
         <ThemeProvider theme={theme}>
@@ -83,37 +129,44 @@ export default function Login() {
                             helperText = {usernameError}
                             size = 'small'
                             margin="normal"
-                            //required
+                            required
                             fullWidth
                             id="username"
                             label="username"
                             name="username"
                         />
+
                         <TextField
+                            error = {ispasswordError}
+                            helperText = {passwordError}
                             size = 'small'
                             margin="normal"
-                            //required
+                            required
                             fullWidth
                             name="password"
-                            label="Password"
+                            label="password"
                             type="password"
                             id="password"
                         />
+
                         <TextField
+                            error = {ispassword2Error}
+                            helperText = {password2Error}
                             size = 'small'
                             margin="normal"
-                            //required
+                            required
                             fullWidth
                             name="password2"
-                            label="Repeat password"
+                            label="repeat password"
                             type="password"
                             id="password2"
                         />
 
                         <TextField
+                            error = {isemailError}
+                            helperText = {emailError}
                             size = 'small'
                             margin="normal"
-                            //required
                             fullWidth
                             name="email"
                             label="email"
@@ -124,7 +177,6 @@ export default function Login() {
                         <TextField
                             size = 'small'
                             margin="normal"
-                            //required
                             fullWidth
                             id="first_name"
                             label="first name"
@@ -134,7 +186,6 @@ export default function Login() {
                         <TextField
                             size = 'small'
                             margin="normal"
-                            //required
                             fullWidth
                             id="last_name"
                             label="last name"
@@ -142,17 +193,21 @@ export default function Login() {
                         />
                         
                         <TextField
+                            error = {isphoneError}
+                            helperText = {phoneError}
                             size = 'small'
                             margin="normal"
-                            //required
+                            required
                             fullWidth
                             id="phone"
-                            label="phone number"
+                            label="phone number - exactly 10 integers"
                             name="phone"
                         />
-                        
+                    
+                        <div style={{ color: 'red', margin: 10}}> {avatarError} </div>
+
                         <label>Avatar</label>
-                        <input type="file" id="avatar" name="avatar"></input>
+                        <input required accept="image/*" type="file" name='avatar' id='avatar'/>
 
                         <Button
                             type="submit"
@@ -170,7 +225,6 @@ export default function Login() {
                             </Grid>
                         </Grid>
                     </Box>
-                    <div style={{ color: 'red', margin: 50 }}> {error} </div>
                 </Box>
                 <Copyright sx={{ mt: 8, mb: 4 }} />
             </Container>

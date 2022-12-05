@@ -13,7 +13,7 @@ const MainPage = () => {
 
 function App() {
   let routes = ( <Routes>
-        <Route path="/" element={<MainPage />} exact></Route>
+        <Route path="/" element={<MainPage />} ></Route>
         <Route path="/studios" element={<Studios />}></Route>
         <Route path="/login" element={<Login />}></Route>
         <Route path="/register" element={<Register />}></Route>

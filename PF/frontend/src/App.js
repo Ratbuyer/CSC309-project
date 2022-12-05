@@ -1,9 +1,11 @@
 import './App.css';
 import {BrowserRouter,Routes, Route} from 'react-router-dom';
-import Studios from './components/Studios';
+
 import MainNavigation from './components/Navigation/MainNavigation';
 import Login from './components/Account/Login';
 import Register from './components/Account/Register';
+import Album from './components/Studios/Album';
+import Details from './components/Studios/Details';
 
 
 const MainPage = () => {
@@ -13,11 +15,15 @@ const MainPage = () => {
 
 function App() {
   let routes = ( <Routes>
-        <Route path="/" element={<MainPage />} ></Route>
-        <Route path="/studios" element={<Studios />}></Route>
+        <Route path="/" element={<MainPage />} exact="true"></Route>
+        <Route path="/studios" element={<Album />}></Route>
+        <Route path="/studios/:studioId/details" element={<Details />}></Route>
         <Route path="/login" element={<Login />}></Route>
         <Route path="/register" element={<Register />}></Route>
       </Routes>)
+
+
+
 
   return (<BrowserRouter>
     <MainNavigation />

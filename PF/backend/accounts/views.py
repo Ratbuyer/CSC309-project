@@ -117,6 +117,11 @@ class ProfileSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError(
                     {"password": "Passwords do not match."}
                 )
+
+        phone = attrs['phone']
+        if len(phone) != 10 or not phone.isnumeric():
+            raise serializers.ValidationError({"phone": "phone number is invalid"})
+
         return attrs
 
     def update(self, instance, validated_data):

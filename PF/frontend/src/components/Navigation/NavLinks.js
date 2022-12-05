@@ -9,7 +9,7 @@ const NavLinks = props => {
       <NavLink to="/studios">Studios</NavLink>
     </li>
     <li>
-      <NavLink to="/accounts">Profile</NavLink>
+      <NavLink to="/profile">Profile</NavLink>
     </li>
   </ul>
   );

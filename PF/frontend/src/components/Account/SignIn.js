@@ -32,7 +32,7 @@ const theme = createTheme();
 
 export default function SignIn() {
 
-  const [error, setError] = useState('');
+  const [error, setError] = useState([]);
 
   useEffect(() => {
 
@@ -44,8 +44,19 @@ export default function SignIn() {
     const data = new FormData(event.currentTarget);
     fetch('http://localhost:8000/accounts/login/', {
       method: 'POST', body: data,
-    }).then(response => response.json())
-      .then(json => setError(json.detail))
+    }).then(function(response) {
+      if (response.status === 401) {
+        setError("No active account found with the given credentials")
+        return response
+      } else if (response.status !== 200) {
+        setError(JSON.stringify(response))
+        return response
+      } else {
+        setError('success')
+        return response
+      }
+    })
+      .catch(() => setError('something wrong happend'))
 
   };
 

@@ -32,7 +32,7 @@ const theme = createTheme();
 export default function Login() {
 
     const [error, setError] = useState([]);
-    const[profile, setProfile] = useState(false)
+    const [profile, setProfile] = useState(false)
 
     const handleSubmit = (event) => {
         event.preventDefault();

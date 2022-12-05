@@ -6,6 +6,8 @@ import Login from './components/Account/Login';
 import Register from './components/Account/Register';
 import Album from './components/Studios/Album';
 import Details from './components/Studios/Details';
+import Profile from './components/Account/Profile';
+import Logout from './components/Account/Logout';
 
 
 const MainPage = () => {
@@ -20,7 +22,9 @@ function App() {
         <Route path="/studios" element={<Album />}></Route>
         <Route path="/studios/:studioId/details" element={<Details />}></Route>
         <Route path="/login" element={<Login />}></Route>
+        <Route path="/logout" element={<Logout />}></Route>
         <Route path="/register" element={<Register />}></Route>
+        <Route path="/profile" element={<Profile />}></Route>
       </Routes>)
 
 

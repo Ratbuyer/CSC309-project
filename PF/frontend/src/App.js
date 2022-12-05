@@ -1,5 +1,5 @@
 import './App.css';
-import {BrowserRouter,Routes, Route} from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import MainNavigation from './components/Navigation/MainNavigation';
 import Login from './components/Account/Login';
@@ -11,13 +11,13 @@ import Logout from './components/Account/Logout';
 
 
 const MainPage = () => {
-  return <h2>Main Page</h2>
+    return <h2 style={{ textAlign: 'centre' }}>Main Page</h2>
 };
 
 
 function App() {
 
-  let routes = ( <Routes>
+    let routes = (<Routes>
         <Route path="/" element={<MainPage />} exact="true"></Route>
         <Route path="/studios" element={<Album />}></Route>
         <Route path="/studios/:studioId/details" element={<Details />}></Route>
@@ -25,18 +25,18 @@ function App() {
         <Route path="/logout" element={<Logout />}></Route>
         <Route path="/register" element={<Register />}></Route>
         <Route path="/profile" element={<Profile />}></Route>
-      </Routes>)
+    </Routes>)
 
 
-  return (<BrowserRouter>
-    <MainNavigation />
-     <main>
-  
-      {routes}
+    return (<BrowserRouter>
+        <MainNavigation />
+        <main>
 
-    </main>
-  </BrowserRouter>
-  )  
+            {routes}
+
+        </main>
+    </BrowserRouter>
+    )
 
 }
 

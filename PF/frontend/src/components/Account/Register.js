@@ -29,14 +29,34 @@ const theme = createTheme();
 export default function Login() {
 
     const [error, setError] = useState([]);
+    
+    const [isusernameError, setIsusernameError] = useState(false)
+    const [usernameError, setUsernameError] = useState('')
 
     useEffect(() => {
 
-    }, [error])
+    }, [error, usernameError])
 
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
+        fetch('http://localhost:8000/accounts/register/', {
+            method: 'POST', body: data
+        })
+        .then(response => {
+            if (response.status !== 200) {
+                return response.json()
+            } else {
+
+            }
+        })
+        .then(json => {
+            if (json.username) {
+                setUsernameError(json.username)
+                setIsusernameError(true)
+            } else setIsusernameError(false)
+        })
+        .catch(() => {})
     };
 
     return (
@@ -59,9 +79,11 @@ export default function Login() {
 
                     <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
                         <TextField
+                            error = {isusernameError}
+                            helperText = {usernameError}
                             size = 'small'
                             margin="normal"
-                            required
+                            //required
                             fullWidth
                             id="username"
                             label="username"
@@ -70,7 +92,7 @@ export default function Login() {
                         <TextField
                             size = 'small'
                             margin="normal"
-                            required
+                            //required
                             fullWidth
                             name="password"
                             label="Password"
@@ -80,18 +102,18 @@ export default function Login() {
                         <TextField
                             size = 'small'
                             margin="normal"
-                            required
+                            //required
                             fullWidth
-                            name="password1"
+                            name="password2"
                             label="Repeat password"
                             type="password"
-                            id="password1"
+                            id="password2"
                         />
 
                         <TextField
                             size = 'small'
                             margin="normal"
-                            required
+                            //required
                             fullWidth
                             name="email"
                             label="email"
@@ -102,7 +124,7 @@ export default function Login() {
                         <TextField
                             size = 'small'
                             margin="normal"
-                            required
+                            //required
                             fullWidth
                             id="first_name"
                             label="first name"
@@ -112,7 +134,7 @@ export default function Login() {
                         <TextField
                             size = 'small'
                             margin="normal"
-                            required
+                            //required
                             fullWidth
                             id="last_name"
                             label="last name"
@@ -122,7 +144,7 @@ export default function Login() {
                         <TextField
                             size = 'small'
                             margin="normal"
-                            required
+                            //required
                             fullWidth
                             id="phone"
                             label="phone number"

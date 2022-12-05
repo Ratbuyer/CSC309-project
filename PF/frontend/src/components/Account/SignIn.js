@@ -13,6 +13,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
+import {useState, useEffect} from "react";
+
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -30,12 +32,20 @@ const theme = createTheme();
 
 export default function SignIn() {
 
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+
+  }, [error])
+
+
   const handleSubmit = (event) => {
+    event.preventDefault();
     const data = new FormData(event.currentTarget);
     fetch('http://localhost:8000/accounts/login/', {
       method: 'POST', body: data,
-    }).then(response => console.log(response))
-      .catch(response => console.log(response))
+    }).then(response => response.json())
+      .then(json => setError(json.detail))
 
   };
 
@@ -57,15 +67,15 @@ export default function SignIn() {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
+              id="username"
+              label="username"
+              name="username"
+              autoComplete="username"
               autoFocus
             />
             <TextField
@@ -78,10 +88,6 @@ export default function SignIn() {
               id="password"
               autoComplete="current-password"
             />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
             <Button
               type="submit"
               fullWidth
@@ -91,11 +97,6 @@ export default function SignIn() {
               Sign In
             </Button>
             <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
               <Grid item>
                 <Link href="#" variant="body2">
                   {"Don't have an account? Sign Up"}
@@ -103,6 +104,7 @@ export default function SignIn() {
               </Grid>
             </Grid>
           </Box>
+          <div style={{color: 'red', margin: 50}}> {error} </div>
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>

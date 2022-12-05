@@ -8,24 +8,29 @@ import Album from './components/Studios/Album';
 import Details from './components/Studios/Details';
 import Profile from './components/Account/Profile';
 import Logout from './components/Account/Logout';
-
+import Classes from './components/Classes/StudioSchedule';
+import UserSchedule from './components/Classes/UserClassSchedule';
+import UserClassHistory from './components/Classes/UserClassHistory';
 
 const MainPage = () => {
     return <h2 style={{ textAlign: 'centre' }}>Main Page</h2>
 };
 
-
 function App() {
-
-    let routes = (<Routes>
-        <Route path="/" element={<MainPage />} exact="true"></Route>
-        <Route path="/studios" element={<Album />}></Route>
-        <Route path="/studios/:studioId/details" element={<Details />}></Route>
-        <Route path="/login" element={<Login />}></Route>
-        <Route path="/logout" element={<Logout />}></Route>
-        <Route path="/register" element={<Register />}></Route>
-        <Route path="/profile" element={<Profile />}></Route>
-    </Routes>)
+	let routes = (
+		<Routes>
+			<Route path="/" element={<MainPage />} exact="true"></Route>
+			<Route path="/studios" element={<Album />}></Route>
+			<Route path="/studios/:studioId/details" element={<Details />}></Route>
+			<Route path="/login" element={<Login />}></Route>
+			<Route path="/logout" element={<Logout />}></Route>
+			<Route path="/register" element={<Register />}></Route>
+			<Route path="/profile" element={<Profile />}></Route>
+			<Route path="/classes/:studioID" element={<Classes />} exact></Route>
+			<Route path="/class-schedule" element={<UserSchedule />} exact></Route>
+			<Route path="/class-history" element={<UserClassHistory />} exact></Route>
+		</Routes>
+	);
 
 
     return (<BrowserRouter>

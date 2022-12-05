@@ -13,7 +13,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import {useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 
 function Copyright(props) {
   return (
@@ -38,25 +38,23 @@ export default function Login() {
 
   }, [error])
 
-
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     fetch('http://localhost:8000/accounts/login/', {
       method: 'POST', body: data,
-    }).then(function(response) {
+    }).then(function (response) {
       if (response.status === 401) {
         setError("No active account found with the given credentials")
-        return response
+        return
       } else if (response.status !== 200) {
-        setError(JSON.stringify(response))
-        return response
+        setError('The given fields are required')
+        return
       } else {
         setError('success')
-        return response
+        return
       }
-    })
-      .catch(() => setError('something wrong happend'))
+    }).catch((err) => setError(err))
 
   };
 
@@ -81,7 +79,7 @@ export default function Login() {
           <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
             <TextField
               margin="normal"
-              required
+              //required
               fullWidth
               id="username"
               label="username"
@@ -91,7 +89,7 @@ export default function Login() {
             />
             <TextField
               margin="normal"
-              required
+              //required
               fullWidth
               name="password"
               label="Password"
@@ -115,11 +113,10 @@ export default function Login() {
               </Grid>
             </Grid>
           </Box>
-          <div style={{color: 'red', margin: 50}}> {error} </div>
+          <div style={{ color: 'red', margin: 50 }}> {error} </div>
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </ThemeProvider>
   );
 }
-

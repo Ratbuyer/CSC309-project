@@ -7,8 +7,11 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { KeywordsToString } from '.';
 import EnrollClass from '../Enroll/EnrollClass';
 import DropClass from '../Drop/DropClass';
+import { useNavigate } from 'react-router-dom';
 
 function ScheduleDialogAction({ session, handleClose, reload, setReload }) {
+	const navigate = useNavigate();
+
 	return (
 		<>
 			<DialogContent>
@@ -21,7 +24,7 @@ function ScheduleDialogAction({ session, handleClose, reload, setReload }) {
 				<Button
 					variant="contained"
 					onClick={() => {
-						EnrollClass(session.classInfo.id);
+						EnrollClass(session.classInfo.id, navigate);
 						handleClose();
 					}}
 					autoFocus
@@ -32,7 +35,7 @@ function ScheduleDialogAction({ session, handleClose, reload, setReload }) {
 					variant="contained"
 					color="error"
 					onClick={() => {
-						DropClass(session.classInfo.id, reload, setReload);
+						DropClass(session.classInfo.id, reload, setReload, navigate);
 						handleClose();
 					}}
 					autoFocus
@@ -45,6 +48,8 @@ function ScheduleDialogAction({ session, handleClose, reload, setReload }) {
 }
 
 function StudioDialogAction({ session, handleClose }) {
+	const navigate = useNavigate();
+
 	return (
 		<>
 			<DialogContent>
@@ -57,7 +62,7 @@ function StudioDialogAction({ session, handleClose }) {
 				<Button
 					variant="contained"
 					onClick={() => {
-						EnrollClass(session.classInfo.id);
+						EnrollClass(session.classInfo.id, navigate);
 						handleClose();
 					}}
 					autoFocus

@@ -1,4 +1,4 @@
-function EnrollEvent(eventID) {
+function EnrollEvent(eventID, navigate) {
 	let token = localStorage.getItem('token');
 
 	fetch(`http://127.0.0.1:8000/classes/event/enroll`, {
@@ -17,6 +17,7 @@ function EnrollEvent(eventID) {
 			console.log('User is not logged in');
 		} else if (response.status === 403) {
 			console.log('User does not have subscription');
+			navigate('/subscription/add');
 		}
 	});
 }

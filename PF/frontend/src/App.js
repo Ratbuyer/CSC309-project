@@ -17,7 +17,7 @@ import History from './components/Payment/History'
 
 
 const MainPage = () => {
-    return <h2 style={{ textAlign: 'centre' }}>Main Page</h2>
+	return <h2 style={{ textAlign: 'centre' }}>Main Page</h2>;
 };
 
 

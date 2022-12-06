@@ -1,4 +1,4 @@
-const DropEvent = (eventID, reload, setReload) => {
+const DropEvent = (eventID, reload, setReload, navigate, setShowSnackbar) => {
 	let token = localStorage.getItem('token');
 
 	fetch(`http://127.0.0.1:8000/classes/event/drop`, {
@@ -13,8 +13,10 @@ const DropEvent = (eventID, reload, setReload) => {
 		console.log('Drop event called');
 		if (response.status === 200) {
 			console.log('Drop event success');
+			setShowSnackbar({ open: true, message: 'Drop', isSuccess: true });
 		} else if (response.status === 401) {
 			console.log('User is not logged in');
+			navigate('/login');
 		}
 		setReload(!reload);
 	});

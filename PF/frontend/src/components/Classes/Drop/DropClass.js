@@ -1,8 +1,5 @@
-import * as React from 'react';
-
-const DropClass = (classID) => {
-	let token =
-		'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjcyNzcxMzkwLCJpYXQiOjE2NzAxNzkzOTAsImp0aSI6IjJjZGE2ZDFjNzQwYzRjZWM5NDc2MmI2Mzk3NjQzM2FmIiwidXNlcl9pZCI6NH0.Y_J5C39t7sQIC8CYr_DWudKlH0zdnpgHHFLCjjYI2rY';
+const DropClass = (classID, reload, setReload) => {
+	let token = localStorage.getItem('token');
 
 	fetch(`http://127.0.0.1:8000/classes/drop`, {
 		method: 'POST',
@@ -12,9 +9,15 @@ const DropClass = (classID) => {
 			Authorization: `Bearer ${token}`,
 		},
 		body: JSON.stringify({ id: classID.toString() }),
-	})
-		.then((response) => console.log('drop class success'))
-		.catch((error) => console.log('something wrong'));
+	}).then((response) => {
+		console.log('Drop class called');
+		if (response.status === 200) {
+			console.log('Drop class success');
+		} else if (response.status === 401) {
+			console.log('User is not logged in');
+		}
+		setReload(!reload);
+	});
 };
 
 export default DropClass;

@@ -6,9 +6,8 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import DropEvent from './DropEvent';
-import DropClass from './DropClass';
 
-function EnrollDialog({ session }) {
+function DropDialog({ session, reload, setReload }) {
 	const [open, setOpen] = React.useState(false);
 
 	const handleClickOpen = () => {
@@ -41,7 +40,8 @@ function EnrollDialog({ session }) {
 						variant="contained"
 						color="error"
 						onClick={() => {
-							DropEvent(session.id);
+							DropEvent(session.id, reload, setReload);
+							setReload(!reload);
 							handleClose();
 						}}
 						autoFocus
@@ -55,4 +55,4 @@ function EnrollDialog({ session }) {
 	);
 }
 
-export default EnrollDialog;
+export default DropDialog;

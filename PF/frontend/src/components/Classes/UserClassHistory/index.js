@@ -39,7 +39,7 @@ const UserClassHistory = () => {
 				setClasses(json.results);
 				setTotalItem(json.count);
 			});
-	}, [offset, token]);
+	}, [offset, token, navigate]);
 
 	return (
 		<>

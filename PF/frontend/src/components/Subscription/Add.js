@@ -18,6 +18,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { Rsvp } from '@mui/icons-material';
 
 
 const theme = createTheme();
@@ -47,6 +48,16 @@ export default function Add() {
     const [redirect, setRedirect] = useState(false)
 
     useEffect(() => {
+        fetch('http://localhost:8000/subscription/manage/', {
+            method: 'GET', headers: { 'Authorization': `Bearer ${token}` }
+        })
+            .then(response => {
+                if(response.status === 200) setRedirect(true)
+                return
+            })
+    }, [])
+
+    useEffect(() => {
         fetch('http://localhost:8000/subscription/plans/', {
             method: 'GET'
         })
@@ -73,7 +84,7 @@ export default function Add() {
         setSelect(event.target.value)
     }
 
-
+    
     if (!token) return <Navigate to='/login' />
     if (redirect) return <Navigate to='/subscription/edit' />
     if (!plans) return

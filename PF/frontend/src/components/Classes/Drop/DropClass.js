@@ -1,4 +1,4 @@
-const DropClass = (classID, reload, setReload, navigate) => {
+const DropClass = (classID, reload, setReload, navigate, setShowSnackbar) => {
 	let token = localStorage.getItem('token');
 
 	fetch(`http://127.0.0.1:8000/classes/drop`, {
@@ -13,6 +13,7 @@ const DropClass = (classID, reload, setReload, navigate) => {
 		console.log('Drop class called');
 		if (response.status === 200) {
 			console.log('Drop class success');
+			setShowSnackbar({ open: true, message: 'Drop', isSuccess: true });
 		} else if (response.status === 401) {
 			console.log('User is not logged in');
 			navigate('/login');

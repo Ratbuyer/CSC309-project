@@ -9,7 +9,13 @@ import EnrollClass from '../Enroll/EnrollClass';
 import DropClass from '../Drop/DropClass';
 import { useNavigate } from 'react-router-dom';
 
-function ScheduleDialogAction({ session, handleClose, reload, setReload }) {
+function ScheduleDialogAction({
+	session,
+	handleClose,
+	reload,
+	setReload,
+	setShowSnackbar,
+}) {
 	const navigate = useNavigate();
 
 	return (
@@ -24,7 +30,13 @@ function ScheduleDialogAction({ session, handleClose, reload, setReload }) {
 				<Button
 					variant="contained"
 					onClick={() => {
-						EnrollClass(session.classInfo.id, navigate);
+						EnrollClass(
+							session.classInfo.id,
+							reload,
+							setReload,
+							navigate,
+							setShowSnackbar
+						);
 						handleClose();
 					}}
 					autoFocus
@@ -35,7 +47,13 @@ function ScheduleDialogAction({ session, handleClose, reload, setReload }) {
 					variant="contained"
 					color="error"
 					onClick={() => {
-						DropClass(session.classInfo.id, reload, setReload, navigate);
+						DropClass(
+							session.classInfo.id,
+							reload,
+							setReload,
+							navigate,
+							setShowSnackbar
+						);
 						handleClose();
 					}}
 					autoFocus
@@ -47,7 +65,13 @@ function ScheduleDialogAction({ session, handleClose, reload, setReload }) {
 	);
 }
 
-function StudioDialogAction({ session, handleClose }) {
+function StudioDialogAction({
+	session,
+	handleClose,
+	reload,
+	setReload,
+	setShowSnackbar,
+}) {
 	const navigate = useNavigate();
 
 	return (
@@ -62,7 +86,13 @@ function StudioDialogAction({ session, handleClose }) {
 				<Button
 					variant="contained"
 					onClick={() => {
-						EnrollClass(session.classInfo.id, navigate);
+						EnrollClass(
+							session.classInfo.id,
+							reload,
+							setReload,
+							navigate,
+							setShowSnackbar
+						);
 						handleClose();
 					}}
 					autoFocus
@@ -81,6 +111,7 @@ function SessionDialogAction({
 	handleClose,
 	reload,
 	setReload,
+	setShowSnackbar,
 }) {
 	if (isUser) {
 		return isHitory ? null : (
@@ -89,10 +120,19 @@ function SessionDialogAction({
 				handleClose={handleClose}
 				reload={reload}
 				setReload={setReload}
+				setShowSnackbar={setShowSnackbar}
 			/>
 		);
 	} else {
-		return <StudioDialogAction session={session} handleClose={handleClose} />;
+		return (
+			<StudioDialogAction
+				session={session}
+				handleClose={handleClose}
+				reload={reload}
+				setReload={setReload}
+				setShowSnackbar={setShowSnackbar}
+			/>
+		);
 	}
 }
 
@@ -104,6 +144,7 @@ function SessionDialog({
 	isHitory,
 	reload,
 	setReload,
+	setShowSnackbar,
 }) {
 	const handleClose = () => {
 		setShowDialog(false);
@@ -150,6 +191,7 @@ function SessionDialog({
 					isHitory={isHitory}
 					reload={reload}
 					setReload={setReload}
+					setShowSnackbar={setShowSnackbar}
 				/>
 				<DialogActions>
 					<Button

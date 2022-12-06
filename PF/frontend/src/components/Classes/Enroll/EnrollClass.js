@@ -1,4 +1,4 @@
-const EnrollClass = (classID, navigate) => {
+const EnrollClass = (classID, reload, setReload, navigate, setShowSnackbar) => {
 	let token = localStorage.getItem('token');
 
 	fetch(`http://127.0.0.1:8000/classes/enroll`, {
@@ -13,8 +13,7 @@ const EnrollClass = (classID, navigate) => {
 		console.log('Enroll class called');
 		if (response.status === 200) {
 			console.log('Enroll class success');
-		} else if (response.status === 400) {
-			console.log(response.json());
+			setShowSnackbar({ open: true, message: 'Enroll', isSuccess: true });
 		} else if (response.status === 401) {
 			console.log('User is not logged in');
 			navigate('/login');
@@ -22,6 +21,7 @@ const EnrollClass = (classID, navigate) => {
 			console.log('User does not have subscription');
 			navigate('/subscription/add');
 		}
+		setReload(!reload);
 	});
 };
 

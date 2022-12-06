@@ -8,7 +8,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DropEvent from './DropEvent';
 import { useNavigate } from 'react-router-dom';
 
-function DropDialog({ session, reload, setReload }) {
+function DropDialog({ session, reload, setReload, setShowSnackbar }) {
 	const [open, setOpen] = React.useState(false);
 
 	const handleClickOpen = () => {
@@ -43,7 +43,13 @@ function DropDialog({ session, reload, setReload }) {
 						variant="contained"
 						color="error"
 						onClick={() => {
-							DropEvent(session.id, reload, setReload, navigate);
+							DropEvent(
+								session.id,
+								reload,
+								setReload,
+								navigate,
+								setShowSnackbar
+							);
 							handleClose();
 						}}
 						autoFocus

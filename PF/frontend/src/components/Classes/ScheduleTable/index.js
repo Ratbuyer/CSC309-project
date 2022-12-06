@@ -10,19 +10,37 @@ import Paper from '@mui/material/Paper';
 import EnrollDialog from '../Enroll/EnrollDiaglog';
 import DropDialog from '../Drop/DropDialog';
 import SessionDialog from './SessionDialog';
+import ActionSnackbar from './ActionSnackbar';
 
 import './style.css';
 
-const ClassButton = ({ row, isUser, isHitory, reload, setReload }) => {
+const ClassButton = ({
+	row,
+	isUser,
+	isHitory,
+	reload,
+	setReload,
+	setShowSnackbar,
+}) => {
 	if (isUser) {
 		return isHitory ? null : (
-			<DropDialog session={row} reload={reload} setReload={setReload} />
+			<DropDialog
+				session={row}
+				reload={reload}
+				setReload={setReload}
+				setShowSnackbar={setShowSnackbar}
+			/>
 		);
 	} else {
 		return row.enrolled_num < row.classInfo.capacity ? (
-			<EnrollDialog session={row} />
+			<EnrollDialog
+				session={row}
+				reload={reload}
+				setReload={setReload}
+				setShowSnackbar={setShowSnackbar}
+			/>
 		) : (
-			<Button variant="outlined" color="error">
+			<Button disabled variant="outlined">
 				Full
 			</Button>
 		);
@@ -44,6 +62,11 @@ export const KeywordsToString = (keywords) => {
 function ScheduleTable({ classes, isUser, isHitory, reload, setReload }) {
 	const [showDialog, setShowDialog] = useState(false);
 	const [session, setSession] = useState(null);
+	const [showSnackbar, setShowSnackbar] = useState({
+		open: false,
+		isSuccess: true,
+		message: '',
+	});
 
 	return (
 		<>
@@ -87,6 +110,7 @@ function ScheduleTable({ classes, isUser, isHitory, reload, setReload }) {
 										isHitory={isHitory}
 										reload={reload}
 										setReload={setReload}
+										setShowSnackbar={setShowSnackbar}
 									/>
 								</TableCell>
 							</TableRow>
@@ -103,8 +127,13 @@ function ScheduleTable({ classes, isUser, isHitory, reload, setReload }) {
 					isHitory={isHitory}
 					reload={reload}
 					setReload={setReload}
+					setShowSnackbar={setShowSnackbar}
 				/>
 			)}
+			<ActionSnackbar
+				showSnackbar={showSnackbar}
+				setShowSnackbar={setShowSnackbar}
+			/>
 		</>
 	);
 }

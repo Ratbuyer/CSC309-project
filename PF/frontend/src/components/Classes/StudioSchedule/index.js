@@ -40,6 +40,7 @@ const StudioSchedule = () => {
 	const [classes, setClasses] = useState([]);
 	const [query, setQuery] = useState({ offset: 0, search: '' });
 	const [totalItem, setTotalItem] = useState(1);
+	const [reload, setReload] = useState(false);
 
 	useEffect(() => {
 		fetch(
@@ -50,13 +51,19 @@ const StudioSchedule = () => {
 				setClasses(json.results);
 				setTotalItem(json.count);
 			});
-	}, [studioID, query]);
+	}, [studioID, query, reload]);
 
 	return (
 		<>
 			<h1>Class Schedule</h1>
 			<Search query={query} setQuery={setQuery} />
-			<ScheduleTable classes={classes} isUser={false} isHitory={true} />
+			<ScheduleTable
+				classes={classes}
+				isUser={false}
+				isHitory={true}
+				reload={reload}
+				setReload={setReload}
+			/>
 			<SchedulePagination
 				lastpage={Math.ceil(totalItem / 10)}
 				query={query}

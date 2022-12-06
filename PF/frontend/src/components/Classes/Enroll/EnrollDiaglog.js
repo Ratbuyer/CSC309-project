@@ -8,7 +8,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import EnrollEvent from './EnrollEvent';
 import { useNavigate } from 'react-router-dom';
 
-function EnrollDialog({ session }) {
+function EnrollDialog({ session, reload, setReload, setShowSnackbar }) {
 	const [open, setOpen] = React.useState(false);
 	const navigate = useNavigate();
 
@@ -41,7 +41,13 @@ function EnrollDialog({ session }) {
 					<Button
 						variant="contained"
 						onClick={() => {
-							EnrollEvent(session.id, navigate);
+							EnrollEvent(
+								session.id,
+								reload,
+								setReload,
+								setShowSnackbar,
+								navigate
+							);
 							handleClose();
 						}}
 						autoFocus

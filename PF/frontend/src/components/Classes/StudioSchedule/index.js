@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import ScheduleTable from '../ScheduleTable';
 import Pagination from '@mui/material/Pagination';
 import TextField from '@mui/material/TextField';
@@ -100,6 +100,8 @@ const StudioSchedule = () => {
 	const [totalItem, setTotalItem] = useState(1);
 	const [reload, setReload] = useState(false);
 
+	let navigate = useNavigate();
+
 	useEffect(() => {
 		let start_date_query = '';
 		let end_date_query = '';
@@ -140,7 +142,12 @@ const StudioSchedule = () => {
 		}${end_time_query ? `&end_time=${end_time_query}` : ''}`;
 
 		fetch(url)
-			.then((response) => response.json())
+			.then((response) => {
+				if (response.status === 404) {
+					navigate('/studios');
+				}
+				response.json();
+			})
 			.then((json) => {
 				setClasses(json.results);
 				setTotalItem(json.count);

@@ -1,0 +1,140 @@
+import { useEffect, useState } from 'react';
+import { Navigate } from 'react-router-dom';
+
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import CssBaseline from '@mui/material/CssBaseline';
+import TextField from '@mui/material/TextField';
+import Link from '@mui/material/Link';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
+import * as React from 'react';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+
+
+
+const theme = createTheme();
+
+
+export default function Edit() {
+
+    const token = localStorage.getItem('token')
+
+    const [plans, setPlans] = useState()
+    const [current, setCurrent] = useState()
+    const [select, setSelect] = useState(1)
+    const [redirect, setRedirect] = useState(false)
+
+
+    useEffect(() => {
+        fetch('http://localhost:8000/subscription/plans/', {
+            method: 'GET'
+        })
+            .then(response => response.json())
+            .then(json => {
+                setPlans(json.results)
+            })
+    }, [])
+
+
+    useEffect(() => {
+        fetch('http://localhost:8000/subscription/manage/', {
+            method: 'GET', headers: { 'Authorization': `Bearer ${token}` }
+        })
+            .then(response => {
+                if (response.status !== 200) setRedirect(true)
+                else return response.json()
+            })
+            .then(json => {
+                setCurrent(json)
+                setSelect(json.plan)
+            })
+    }, [])
+
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        console.log(event.currentTarget)
+        const data = new FormData(event.currentTarget);
+        data.append('plan', select)
+        fetch('http://localhost:8000/subscription/manage/', {
+            method: 'POST', body: data, headers: { 'Authorization': `Bearer ${token}` }
+        })
+            .then(response => response.json())
+            .then(json => json)
+    }
+
+    const handleSelect = (event) => {
+        setSelect(event.target.value)
+    }
+
+    if (!token) return <Navigate to='/login' />
+    if (redirect) return <Navigate to='/subscription/add' />
+    if (!plans) return
+    if (!current) return
+
+    return (
+        <ThemeProvider theme={theme}>
+            <Container component="main" maxWidth="xs">
+                <CssBaseline />
+                <Box
+                    sx={{
+                        marginTop: 8,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                    }}
+                >
+
+                    <h2>Your subscription</h2>
+                    <h4 style={{margin: 1}}>Start date: {current.date}</h4>
+                    <h4 style={{margin: 1}}>Your card: {current.card}</h4>
+                    <h4 style={{margin: 1}}>Your Payment schedule:</h4>
+                    
+                    <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
+
+                        <InputLabel id="label">Select Plan</InputLabel>
+                        <Select
+                            labelId="label"
+                            fullWidth
+                            value={select}
+                            onChange={handleSelect}
+                        >
+
+                            {plans.map(plan => <MenuItem value={plan.id} key={plan.id}> {plan.amount}$ per {plan.duration}</MenuItem>)}
+
+                        </Select>
+
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="card"
+                            label="card number"
+                            name="card"
+                            defaultValue={current.card}
+                        />
+
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            sx={{ mt: 3, mb: 2 }}
+                        >
+                            Submit
+                        </Button>
+
+                    </Box>
+                </Box>
+            </Container>
+        </ThemeProvider>
+    );
+}

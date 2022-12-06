@@ -11,6 +11,8 @@ import Logout from './components/Account/Logout';
 import Classes from './components/Classes/StudioSchedule';
 import UserSchedule from './components/Classes/UserClassSchedule';
 import UserClassHistory from './components/Classes/UserClassHistory';
+import Add from './components/Subscription/Add'
+import Edit from './components/Subscription/Edit'
 
 const MainPage = () => {
     return <h2 style={{ textAlign: 'centre' }}>Main Page</h2>
@@ -29,6 +31,8 @@ function App() {
 			<Route path="/classes/:studioID" element={<Classes />} exact></Route>
 			<Route path="/class-schedule" element={<UserSchedule />} exact></Route>
 			<Route path="/class-history" element={<UserClassHistory />} exact></Route>
+            <Route path="/subscription/add" element={<Add />}></Route>
+            <Route path="/subscription/edit" element={<Edit />}></Route>
 		</Routes>
 	);
 

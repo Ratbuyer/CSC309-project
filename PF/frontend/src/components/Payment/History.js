@@ -81,7 +81,7 @@ export default function History() {
                                 <TableCell component="th" scope="row">
                                     {payment.amount}
                                 </TableCell>
-                                <TableCell align="center">{payment.datetime.replace('T', '  ')}</TableCell>
+                                <TableCell align="center">{payment.datetime.replace('T', '  ').slice(0, 17)}</TableCell>
                                 <TableCell align="center">{payment.card}</TableCell>
                             </TableRow>
                         ))}

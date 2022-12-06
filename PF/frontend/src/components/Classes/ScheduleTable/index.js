@@ -13,9 +13,11 @@ import SessionDialog from './SessionDialog';
 
 import './style.css';
 
-const ClassButton = ({ row, isUser, isHitory }) => {
+const ClassButton = ({ row, isUser, isHitory, reload, setReload }) => {
 	if (isUser) {
-		return isHitory ? null : <DropDialog session={row} />;
+		return isHitory ? null : (
+			<DropDialog session={row} reload={reload} setReload={setReload} />
+		);
 	} else {
 		return row.enrolled_num < row.classInfo.capacity ? (
 			<EnrollDialog session={row} />
@@ -39,7 +41,7 @@ export const KeywordsToString = (keywords) => {
 	return <>{str}</>;
 };
 
-function ScheduleTable({ classes, isUser, isHitory }) {
+function ScheduleTable({ classes, isUser, isHitory, reload, setReload }) {
 	const [showDialog, setShowDialog] = useState(false);
 	const [session, setSession] = useState(null);
 
@@ -79,7 +81,13 @@ function ScheduleTable({ classes, isUser, isHitory }) {
 										row.end_time.slice(0, -3)}
 								</TableCell>
 								<TableCell align="center" onClick={(e) => e.stopPropagation()}>
-									<ClassButton row={row} isUser={isUser} isHitory={isHitory} />
+									<ClassButton
+										row={row}
+										isUser={isUser}
+										isHitory={isHitory}
+										reload={reload}
+										setReload={setReload}
+									/>
 								</TableCell>
 							</TableRow>
 						))}
@@ -93,6 +101,8 @@ function ScheduleTable({ classes, isUser, isHitory }) {
 					setShowDialog={setShowDialog}
 					isUser={isUser}
 					isHitory={isHitory}
+					reload={reload}
+					setReload={setReload}
 				/>
 			)}
 		</>

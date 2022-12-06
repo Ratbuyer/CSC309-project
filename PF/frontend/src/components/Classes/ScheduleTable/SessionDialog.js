@@ -8,7 +8,7 @@ import { KeywordsToString } from '.';
 import EnrollClass from '../Enroll/EnrollClass';
 import DropClass from '../Drop/DropClass';
 
-function ScheduleDialogAction({ session, handleClose }) {
+function ScheduleDialogAction({ session, handleClose, reload, setReload }) {
 	return (
 		<>
 			<DialogContent>
@@ -32,7 +32,7 @@ function ScheduleDialogAction({ session, handleClose }) {
 					variant="contained"
 					color="error"
 					onClick={() => {
-						DropClass(session.classInfo.id);
+						DropClass(session.classInfo.id, reload, setReload);
 						handleClose();
 					}}
 					autoFocus
@@ -69,10 +69,22 @@ function StudioDialogAction({ session, handleClose }) {
 	);
 }
 
-function SessionDialogAction({ session, isUser, isHitory, handleClose }) {
+function SessionDialogAction({
+	session,
+	isUser,
+	isHitory,
+	handleClose,
+	reload,
+	setReload,
+}) {
 	if (isUser) {
 		return isHitory ? null : (
-			<ScheduleDialogAction session={session} handleClose={handleClose} />
+			<ScheduleDialogAction
+				session={session}
+				handleClose={handleClose}
+				reload={reload}
+				setReload={setReload}
+			/>
 		);
 	} else {
 		return <StudioDialogAction session={session} handleClose={handleClose} />;
@@ -85,6 +97,8 @@ function SessionDialog({
 	setShowDialog,
 	isUser,
 	isHitory,
+	reload,
+	setReload,
 }) {
 	const handleClose = () => {
 		setShowDialog(false);
@@ -98,9 +112,7 @@ function SessionDialog({
 				aria-labelledby="alert-dialog-title"
 				aria-describedby="alert-dialog-description"
 			>
-				<DialogTitle id="alert-dialog-title">
-					<h2>Class Information</h2>
-				</DialogTitle>
+				<DialogTitle id="alert-dialog-title">Class Information</DialogTitle>
 				<DialogContent>
 					<div>
 						<div>
@@ -131,6 +143,8 @@ function SessionDialog({
 					handleClose={handleClose}
 					isUser={isUser}
 					isHitory={isHitory}
+					reload={reload}
+					setReload={setReload}
 				/>
 				<DialogActions>
 					<Button

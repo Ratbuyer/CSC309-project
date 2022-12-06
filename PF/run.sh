@@ -1,6 +1,6 @@
 cd backend
 source "venv/bin/activate"
-./run.sh
+./run.sh &
 
 cd ../frontend
 npm start

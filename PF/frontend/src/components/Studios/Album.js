@@ -15,8 +15,12 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useMemo} from "react";
 import { Link } from 'react-router-dom';
+import './Album.css';
+import {GoogleMap, useLoadScript, MarkerF} from '@react-google-maps/api';
+//import Map from './Map';
+
 
 function Copyright() {
   return (
@@ -35,11 +39,37 @@ const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 const theme = createTheme();
 
+
+
 export default function Album() {
+    
+    const {isLoaded} = useLoadScript({googleMapsApiKey: "AIzaSyA7SCCkx8BeyK13Jo-NDiGPkCDqxjpGt14"});
 
     const [longitude, setLongitude] = useState(0);
     const [latitude, setLatitude] = useState(0);
     const [studios, setStudios] = useState();
+
+    const [markers, setMarkers] = useState()
+
+    //const markerTest = useMemo(() => ({ lat: 44, lng: 80 }), []); 
+
+    
+    useEffect(() => {
+      if (studios) {
+        getMarkers()
+      }
+    }, [isLoaded, studios]);
+
+
+    
+    const getMarkers = () => {
+      return (
+          studios.map((studio, index) => {
+          <MarkerF key={Math.random()} name={studio.name} position={{lat: studio.latitude, lng: studio.longitude}} />
+     
+          }));
+    }
+
 
     const updateLongitude = value => {
         if (value) {
@@ -53,35 +83,70 @@ export default function Album() {
         } 
     }
 
+    
+
+    getLocation();
+    
     useEffect(() => {
          fetch(`http://127.0.0.1:8000/studios/all/?longitude=${longitude}&latitude=${latitude}`)
         .then(res => res.json())
         .then(json => {setStudios(json.results)})
       
-          
+        
     }, [longitude, latitude])
 
 
+    var x = document.getElementById("demo");
 
+    function getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition, showError);
+        
+      } else { 
+        x.innerHTML = "Geolocation is not supported by this browser.";
+      }
+    }
+
+    function showPosition(position) {
+      
+      if (x) {
+        setLatitude(position.coords.latitude);
+        setLongitude(position.coords.longitude);
+        
+        x.innerHTML = "Your location:" + "<br>Latitude: " + position.coords.latitude +
+      "<br>Longitude: " + position.coords.longitude;
+      }
+      
+    }
+
+    function showError(error) {
+      switch(error.code) {
+        case error.PERMISSION_DENIED:
+          x.innerHTML = "User denied the request for Geolocation." + " <a href='https://support.google.com/chrome/answer/142065?hl=en'>Please enable this feature in setting.</a>"
+          break;
+        case error.POSITION_UNAVAILABLE:
+          x.innerHTML = "Location information is unavailable."
+          break;
+        case error.TIMEOUT:
+          x.innerHTML = "The request to get user location timed out."
+          break;
+        case error.UNKNOWN_ERROR:
+          x.innerHTML = "An unknown error occurred."
+          break;
+      }
+    }
 
   return (
-    <ThemeProvider theme={theme}>
+    <>
+    
+    <ThemeProvider theme={theme}> 
+    
       <CssBaseline />
       
       <main>
 
+        <p id="demo"></p>
 
-            <label for="longitude"> Longitude </label>
-            <input id="longitude" type="text" onChange={(event) => {
-                 updateLongitude(event.target.value)
-                }
-            } />
-
-            <label for="latitude"> Latitude </label>
-            <input id="latitude" type="text" onChange={(event) => {
-                 updateLatitude(event.target.value)
-                }
-            } />
         {/* Hero unit */}
         <Box
           sx={{
@@ -109,15 +174,34 @@ export default function Album() {
               spacing={2}
               justifyContent="center"
             >
-             <Button variant="contained">Select your location</Button>
+             
             </Stack>
+                          
           </Container>
+        
+
         </Box>
+        
+      
         <Container sx={{ py: 8 }} maxWidth="md">
           {/* End hero unit */}
 
+        {isLoaded && 
+          <GoogleMap zoom={10} center={{lat: 44, lng: -80}} mapContainerClassName="map-container">
+            {studios && 
+              getMarkers()
+            }
+
+          </GoogleMap>
+        }  
+        
+          
+
+          
 
           <Grid container spacing={4}>
+
+            
             {studios && studios.map((card, index) => (
               <Grid item key={index} xs={12} sm={6} md={4}>
 
@@ -154,6 +238,7 @@ export default function Album() {
           </Grid>
         </Container>
       </main>
+      
       {/* Footer */}
       <Box sx={{ bgcolor: 'background.paper', p: 6 }} component="footer">
         <Typography variant="h6" align="center" gutterBottom>
@@ -171,5 +256,8 @@ export default function Album() {
       </Box>
       {/* End footer */}
     </ThemeProvider>
+    
+    </>
   );
 }
+

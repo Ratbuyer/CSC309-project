@@ -1,8 +1,5 @@
-import * as React from 'react';
-
-const DropEvent = (eventID) => {
-	let token =
-		'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjcyNzcxMzkwLCJpYXQiOjE2NzAxNzkzOTAsImp0aSI6IjJjZGE2ZDFjNzQwYzRjZWM5NDc2MmI2Mzk3NjQzM2FmIiwidXNlcl9pZCI6NH0.Y_J5C39t7sQIC8CYr_DWudKlH0zdnpgHHFLCjjYI2rY';
+const DropEvent = (eventID, reload, setReload, navigate, setShowSnackbar) => {
+	let token = localStorage.getItem('token');
 
 	fetch(`http://127.0.0.1:8000/classes/event/drop`, {
 		method: 'POST',
@@ -12,9 +9,17 @@ const DropEvent = (eventID) => {
 			Authorization: `Bearer ${token}`,
 		},
 		body: JSON.stringify({ id: eventID.toString() }),
-	})
-		.then((response) => console.log('drop success'))
-		.catch((error) => console.log('somethinf wrong'));
+	}).then((response) => {
+		console.log('Drop event called');
+		if (response.status === 200) {
+			console.log('Drop event success');
+			setShowSnackbar({ open: true, message: 'Drop', isSuccess: true });
+		} else if (response.status === 401) {
+			console.log('User is not logged in');
+			navigate('/login');
+		}
+		setReload(!reload);
+	});
 };
 
 export default DropEvent;

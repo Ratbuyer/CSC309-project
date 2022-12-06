@@ -19,6 +19,7 @@ const UserSchedule = () => {
 	const [classes, setClasses] = useState([]);
 	const [offset, setOffset] = useState(0);
 	const [totalItem, setTotalItem] = useState(1);
+	const [reload, setReload] = useState(false);
 
 	let token = localStorage.getItem('token');
 	let navigate = useNavigate();
@@ -39,12 +40,19 @@ const UserSchedule = () => {
 				setClasses(json.results);
 				setTotalItem(json.count);
 			});
-	}, [offset, token]);
+	}, [offset, token, reload, navigate]);
 
 	return (
 		<>
 			<h1>My Class Schedule</h1>
-			<ScheduleTable classes={classes} isUser={true} isHitory={false} />
+			{classes.length === 0 ? <h2>You have no enrolled classes</h2> : null}
+			<ScheduleTable
+				classes={classes}
+				isUser={true}
+				isHitory={false}
+				reload={reload}
+				setReload={setReload}
+			/>
 			<SchedulePagination
 				lastpage={Math.ceil(totalItem / 10)}
 				offset={offset}

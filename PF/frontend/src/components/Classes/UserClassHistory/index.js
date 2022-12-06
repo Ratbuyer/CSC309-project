@@ -39,11 +39,13 @@ const UserClassHistory = () => {
 				setClasses(json.results);
 				setTotalItem(json.count);
 			});
-	}, [offset, token]);
+	}, [offset, token, navigate]);
 
 	return (
 		<>
 			<h1>My Class History</h1>
+			{classes.length === 0 ? <h2>You have no history</h2> : null}
+
 			<ScheduleTable classes={classes} isUser={true} isHitory={true} />
 			<SchedulePagination
 				lastpage={Math.ceil(totalItem / 10)}

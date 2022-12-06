@@ -7,8 +7,17 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { KeywordsToString } from '.';
 import EnrollClass from '../Enroll/EnrollClass';
 import DropClass from '../Drop/DropClass';
+import { useNavigate } from 'react-router-dom';
 
-function ScheduleDialogAction({ session, handleClose }) {
+function ScheduleDialogAction({
+	session,
+	handleClose,
+	reload,
+	setReload,
+	setShowSnackbar,
+}) {
+	const navigate = useNavigate();
+
 	return (
 		<>
 			<DialogContent>
@@ -21,7 +30,13 @@ function ScheduleDialogAction({ session, handleClose }) {
 				<Button
 					variant="contained"
 					onClick={() => {
-						EnrollClass(session.classInfo.id);
+						EnrollClass(
+							session.classInfo.id,
+							reload,
+							setReload,
+							navigate,
+							setShowSnackbar
+						);
 						handleClose();
 					}}
 					autoFocus
@@ -32,7 +47,13 @@ function ScheduleDialogAction({ session, handleClose }) {
 					variant="contained"
 					color="error"
 					onClick={() => {
-						DropClass(session.classInfo.id);
+						DropClass(
+							session.classInfo.id,
+							reload,
+							setReload,
+							navigate,
+							setShowSnackbar
+						);
 						handleClose();
 					}}
 					autoFocus
@@ -44,7 +65,15 @@ function ScheduleDialogAction({ session, handleClose }) {
 	);
 }
 
-function StudioDialogAction({ session, handleClose }) {
+function StudioDialogAction({
+	session,
+	handleClose,
+	reload,
+	setReload,
+	setShowSnackbar,
+}) {
+	const navigate = useNavigate();
+
 	return (
 		<>
 			<DialogContent>
@@ -57,7 +86,13 @@ function StudioDialogAction({ session, handleClose }) {
 				<Button
 					variant="contained"
 					onClick={() => {
-						EnrollClass(session.classInfo.id);
+						EnrollClass(
+							session.classInfo.id,
+							reload,
+							setReload,
+							navigate,
+							setShowSnackbar
+						);
 						handleClose();
 					}}
 					autoFocus
@@ -69,13 +104,35 @@ function StudioDialogAction({ session, handleClose }) {
 	);
 }
 
-function SessionDialogAction({ session, isUser, isHitory, handleClose }) {
+function SessionDialogAction({
+	session,
+	isUser,
+	isHitory,
+	handleClose,
+	reload,
+	setReload,
+	setShowSnackbar,
+}) {
 	if (isUser) {
 		return isHitory ? null : (
-			<ScheduleDialogAction session={session} handleClose={handleClose} />
+			<ScheduleDialogAction
+				session={session}
+				handleClose={handleClose}
+				reload={reload}
+				setReload={setReload}
+				setShowSnackbar={setShowSnackbar}
+			/>
 		);
 	} else {
-		return <StudioDialogAction session={session} handleClose={handleClose} />;
+		return (
+			<StudioDialogAction
+				session={session}
+				handleClose={handleClose}
+				reload={reload}
+				setReload={setReload}
+				setShowSnackbar={setShowSnackbar}
+			/>
+		);
 	}
 }
 
@@ -85,6 +142,9 @@ function SessionDialog({
 	setShowDialog,
 	isUser,
 	isHitory,
+	reload,
+	setReload,
+	setShowSnackbar,
 }) {
 	const handleClose = () => {
 		setShowDialog(false);
@@ -98,9 +158,7 @@ function SessionDialog({
 				aria-labelledby="alert-dialog-title"
 				aria-describedby="alert-dialog-description"
 			>
-				<DialogTitle id="alert-dialog-title">
-					<h2>Class Information</h2>
-				</DialogTitle>
+				<DialogTitle id="alert-dialog-title">Class Information</DialogTitle>
 				<DialogContent>
 					<div>
 						<div>
@@ -131,6 +189,9 @@ function SessionDialog({
 					handleClose={handleClose}
 					isUser={isUser}
 					isHitory={isHitory}
+					reload={reload}
+					setReload={setReload}
+					setShowSnackbar={setShowSnackbar}
 				/>
 				<DialogActions>
 					<Button

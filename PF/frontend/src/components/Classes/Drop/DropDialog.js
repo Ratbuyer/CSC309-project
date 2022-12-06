@@ -6,9 +6,9 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import DropEvent from './DropEvent';
-import DropClass from './DropClass';
+import { useNavigate } from 'react-router-dom';
 
-function EnrollDialog({ session }) {
+function DropDialog({ session, reload, setReload, setShowSnackbar }) {
 	const [open, setOpen] = React.useState(false);
 
 	const handleClickOpen = () => {
@@ -18,6 +18,8 @@ function EnrollDialog({ session }) {
 	const handleClose = () => {
 		setOpen(false);
 	};
+
+	const navigate = useNavigate();
 
 	return (
 		<div>
@@ -41,7 +43,13 @@ function EnrollDialog({ session }) {
 						variant="contained"
 						color="error"
 						onClick={() => {
-							DropEvent(session.id);
+							DropEvent(
+								session.id,
+								reload,
+								setReload,
+								navigate,
+								setShowSnackbar
+							);
 							handleClose();
 						}}
 						autoFocus
@@ -55,4 +63,4 @@ function EnrollDialog({ session }) {
 	);
 }
 
-export default EnrollDialog;
+export default DropDialog;

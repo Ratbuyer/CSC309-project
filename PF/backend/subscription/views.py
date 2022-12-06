@@ -115,11 +115,11 @@ def future_payment(request):
 
     if sub.plan.duration == 'Month':
         day = str(sub.date)[-2:]
-        data['future payments'] = f'{sub.plan.amount} on {day} of every month'
-    
+        data['future'] = f'{sub.plan.amount}$ on {day} of every month'
+
     elif sub.plan.duration == 'Year':
         month = str(sub.date)[-5:]
-        data['future payments'] = f'{sub.plan.amount} on {month} of every year'
+        data['future'] = f'{sub.plan.amount}$ on {month} of every year'
 
     return Response(data)
 

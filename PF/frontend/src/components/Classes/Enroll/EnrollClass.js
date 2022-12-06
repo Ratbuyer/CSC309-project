@@ -1,6 +1,5 @@
-const EnrollClass = (classID) => {
-	let token =
-		'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjcyNzcxMzkwLCJpYXQiOjE2NzAxNzkzOTAsImp0aSI6IjJjZGE2ZDFjNzQwYzRjZWM5NDc2MmI2Mzk3NjQzM2FmIiwidXNlcl9pZCI6NH0.Y_J5C39t7sQIC8CYr_DWudKlH0zdnpgHHFLCjjYI2rY';
+const EnrollClass = (classID, reload, setReload, navigate, setShowSnackbar) => {
+	let token = localStorage.getItem('token');
 
 	fetch(`http://127.0.0.1:8000/classes/enroll`, {
 		method: 'POST',
@@ -10,9 +9,20 @@ const EnrollClass = (classID) => {
 			Authorization: `Bearer ${token}`,
 		},
 		body: JSON.stringify({ id: classID.toString() }),
-	})
-		.then((response) => console.log('Enroll class success'))
-		.catch((error) => console.log('something wrong'));
+	}).then((response) => {
+		console.log('Enroll class called');
+		if (response.status === 200) {
+			console.log('Enroll class success');
+			setShowSnackbar({ open: true, message: 'Enroll', isSuccess: true });
+		} else if (response.status === 401) {
+			console.log('User is not logged in');
+			navigate('/login');
+		} else if (response.status === 403) {
+			console.log('User does not have subscription');
+			navigate('/subscription/add');
+		}
+		setReload(!reload);
+	});
 };
 
 export default EnrollClass;

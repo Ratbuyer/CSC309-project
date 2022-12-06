@@ -1,5 +1,6 @@
 import { Navigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import * as React from 'react';
 
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -9,12 +10,48 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar'
 import Container from '@mui/material/Container';
+import Alert from '@mui/material/Alert'
+import IconButton from '@mui/material/IconButton';
+import Collapse from '@mui/material/Collapse';
+import CloseIcon from '@mui/icons-material/Close';
+
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 
 const theme = createTheme();
 
-const Edit = ({account}) => {
+const Success = () => {
+
+    const [open, setOpen] = React.useState(true);
+
+    return (
+        <Box sx={{ width: '100%' }}>
+            <Collapse in={open}>
+                <Alert
+                    action={
+                        <IconButton
+                            aria-label="close"
+                            color="inherit"
+                            size="small"
+                            onClick={() => {
+                                setOpen(false);
+                            }}
+                        >
+                            <CloseIcon fontSize="inherit" />
+                        </IconButton>
+                    }
+                    sx={{ mb: 2 }}
+                >
+                    your changes has been made
+                </Alert>
+            </Collapse>
+        </Box>
+    );
+}
+
+const Edit = ({ account }) => {
+
+    const [success, setSuccess] = useState(false)
 
     const [user, setUser] = useState(account)
 
@@ -30,70 +67,73 @@ const Edit = ({account}) => {
     const [isphoneError, setIsphoneError] = useState(false)
     const [phoneError, setPhoneError] = useState('')
 
-    const[isavatarError, setIsavatarError] = useState(false)
-    const[avatarError, setAvatarError] = useState(false)
+    const [isavatarError, setIsavatarError] = useState(false)
+    const [avatarError, setAvatarError] = useState(false)
 
     const handleSubmit = (event) => {
+        setSuccess(false)
         const token = localStorage.getItem('token')
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         fetch('http://localhost:8000/accounts/profile/', {
-            method: 'PUT', body: data, headers: {'Authorization': `Bearer ${token}`}
+            method: 'PUT', body: data, headers: { 'Authorization': `Bearer ${token}` }
         })
-        .then(response => response.json())
-        .then(json => {
+            .then(response => response.json())
+            .then(json => {
 
-            if (json.username) {
-                alert('Your changes has been made')
-                setUser(json)
+                if (json.username) {
+                    setSuccess(true)
+                    setUser(json)
 
-                setIspasswordError(false)
-                setIspassword2Error(false)
-                setIsemailError(false)
-                setIsphoneError(false)
-                setIsavatarError(false)
+                    setIspasswordError(false)
+                    setIspassword2Error(false)
+                    setIsemailError(false)
+                    setIsphoneError(false)
+                    setIsavatarError(false)
 
-                setPasswordError('')
-                setPassword2Error('')
-                setEmailError('')
-                setPhoneError('')
-                setAvatarError('')
-                return
-            }
-
-            if (json.password) {
-                setIspasswordError(true)
-                setPasswordError(json.password)
-            }   else setIspasswordError(false)
-            
-            if (json.password2 || json.passwords) {
-                setIspassword2Error(true)
-                if (json.password2) {
-                    setPassword2Error(json.password2)
-                } else if (json.passwords) {
-                    setPassword2Error(json.passwords)
+                    setPasswordError('')
+                    setPassword2Error('')
+                    setEmailError('')
+                    setPhoneError('')
+                    setAvatarError('')
+                    return
                 }
-            } else setIspassword2Error(false)
 
-            if (json.email) {
-                setIsemailError(true)
-                setEmailError(json.email)
-            } else setIsemailError(false)
+                setSuccess(false)
 
-            if (json.phone) {
-                setIsphoneError(true)
-                setPhoneError(json.phone)
-            } else setIsphoneError(false)
+                if (json.password) {
+                    setIspasswordError(true)
+                    setPasswordError(json.password)
+                } else setIspasswordError(false)
 
-            if (json.avatar) {
-                setIsavatarError(true)
-                setAvatarError(json.avatar)
-            } else {
-                setIsavatarError(false)
-                setAvatarError('')
-            }
-        })
-        .catch(() => {})
+                if (json.password2 || json.passwords) {
+                    setIspassword2Error(true)
+                    if (json.password2) {
+                        setPassword2Error(json.password2)
+                    } else if (json.passwords) {
+                        setPassword2Error(json.passwords)
+                    }
+                } else setIspassword2Error(false)
+
+                if (json.email) {
+                    setIsemailError(true)
+                    setEmailError(json.email)
+                } else setIsemailError(false)
+
+                if (json.phone) {
+                    setIsphoneError(true)
+                    setPhoneError(json.phone)
+                } else setIsphoneError(false)
+
+                if (json.avatar) {
+                    setIsavatarError(true)
+                    setAvatarError(json.avatar)
+                } else {
+                    setIsavatarError(false)
+                    setAvatarError('')
+                }
+            })
+            .catch(() => { })
     };
 
     return (
@@ -109,16 +149,16 @@ const Edit = ({account}) => {
                         alignItems: 'center',
                     }}
                 >
-                    <h1> Welcome, { user.username }</h1>
+                    <h1> Welcome, {user.username}</h1>
 
                     <Avatar src={user.avatar}></Avatar>
 
                     <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
 
                         <TextField
-                            error = {ispasswordError}
-                            helperText = {passwordError}
-                            size = 'small'
+                            error={ispasswordError}
+                            helperText={passwordError}
+                            size='small'
                             margin="normal"
                             fullWidth
                             name="password"
@@ -128,9 +168,9 @@ const Edit = ({account}) => {
                         />
 
                         <TextField
-                            error = {ispassword2Error}
-                            helperText = {password2Error}
-                            size = 'small'
+                            error={ispassword2Error}
+                            helperText={password2Error}
+                            size='small'
                             margin="normal"
                             fullWidth
                             name="password2"
@@ -140,42 +180,42 @@ const Edit = ({account}) => {
                         />
 
                         <TextField
-                            error = {isemailError}
-                            helperText = {emailError}
-                            size = 'small'
+                            error={isemailError}
+                            helperText={emailError}
+                            size='small'
                             margin="normal"
                             fullWidth
                             name="email"
                             label="email"
                             type="email"
                             id="email"
-                            defaultValue={ user.email }
+                            defaultValue={user.email}
                         />
 
                         <TextField
-                            size = 'small'
+                            size='small'
                             margin="normal"
                             fullWidth
                             id="first_name"
                             label="first name"
                             name="first_name"
-                            defaultValue={ user.first_name }
+                            defaultValue={user.first_name}
                         />
 
                         <TextField
-                            size = 'small'
+                            size='small'
                             margin="normal"
                             fullWidth
                             id="last_name"
                             label="last name"
                             name="last_name"
-                            defaultValue={ user.last_name }
+                            defaultValue={user.last_name}
                         />
-                        
+
                         <TextField
-                            error = {isphoneError}
-                            helperText = {phoneError}
-                            size = 'small'
+                            error={isphoneError}
+                            helperText={phoneError}
+                            size='small'
                             margin="normal"
                             required
                             fullWidth
@@ -184,11 +224,11 @@ const Edit = ({account}) => {
                             name="phone"
                             defaultValue={user.phone}
                         />
-                    
-                        <div style={{ color: 'red', margin: 10}}> {avatarError} </div>
+
+                        <div style={{ color: 'red', margin: 10 }}> {avatarError} </div>
 
                         <label>Select new avatar</label>
-                        <input accept="image/*" type="file" name='avatar' id='avatar'/>
+                        <input accept="image/*" type="file" name='avatar' id='avatar' />
 
                         <Button
                             type="submit"
@@ -207,6 +247,7 @@ const Edit = ({account}) => {
                             </Grid>
                         </Grid>
 
+                        {success ? <Success /> : null}
                     </Box>
                 </Box>
             </Container>
@@ -224,13 +265,13 @@ export default function Profile() {
 
     useEffect(() => {
         fetch('http://localhost:8000/accounts/profile/', {
-         method: 'GET', headers: {'Authorization': `Bearer ${token}`}
+            method: 'GET', headers: { 'Authorization': `Bearer ${token}` }
         })
-        .then(response => {
-            if (response.status == 200) return response.json()
-            else setRedirect(true)
-        })
-        .then(json => setData(json))
+            .then(response => {
+                if (response.status == 200) return response.json()
+                else setRedirect(true)
+            })
+            .then(json => setData(json))
 
     }, [])
 

@@ -22,19 +22,6 @@ import {GoogleMap, useLoadScript, MarkerF} from '@react-google-maps/api';
 //import Map from './Map';
 
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
-
 const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 const theme = createTheme();
@@ -56,10 +43,17 @@ export default function Album() {
     
     useEffect(() => {
       if (studios) {
-        getMarkers()
+       
+        <GoogleMap zoom={10} center={{lat: 44, lng: -80}} mapContainerClassName="map-container">
+            {
+            studios.map((studio, index) => {
+            <MarkerF key={index} name={studio.name} position={{lat: studio.latitude, lng: studio.longitude}} />
+            })}
+        </GoogleMap>
+       
       }
     }, [isLoaded, studios]);
-
+  
 
     
     const getMarkers = () => {
@@ -136,6 +130,8 @@ export default function Album() {
       }
     }
 
+  if (!studios) return;
+
   return (
     <>
     
@@ -186,13 +182,20 @@ export default function Album() {
         <Container sx={{ py: 8 }} maxWidth="md">
           {/* End hero unit */}
 
-        {isLoaded && 
-          <GoogleMap zoom={10} center={{lat: 44, lng: -80}} mapContainerClassName="map-container">
-            {studios && 
-              getMarkers()
-            }
-
-          </GoogleMap>
+        
+        
+        {isLoaded && studios &&
+            <GoogleMap zoom={10} center={{lat: 44, lng: -80}} mapContainerClassName="map-container">
+              <MarkerF key={1} position={{lat: 35, lng:53}}></MarkerF>
+              {
+              studios.map((studio, index) => {
+              console.log(studio.latitude,  studio.longitude);
+                
+              
+              <MarkerF key={Math.random()} name={studio.name} position={{lat: studio.latitude, lng: studio.longitude}} />
+              
+              })}
+            </GoogleMap>  
         }  
         
           
@@ -203,6 +206,7 @@ export default function Album() {
 
             
             {studios && studios.map((card, index) => (
+              
               <Grid item key={index} xs={12} sm={6} md={4}>
 
                 <Card
@@ -222,9 +226,9 @@ export default function Album() {
                       {card.name}
                     </Typography>
                     <Typography>
-                        
+                      
                       Address: {card.address} <br/>
-                      Distance from you: {card.distance}
+                      Distance from you: {Math.round(card.distance)}
                     </Typography>
                   </CardContent>
                   <CardActions>
@@ -239,22 +243,7 @@ export default function Album() {
         </Container>
       </main>
       
-      {/* Footer */}
-      <Box sx={{ bgcolor: 'background.paper', p: 6 }} component="footer">
-        <Typography variant="h6" align="center" gutterBottom>
-          Footer
-        </Typography>
-        <Typography
-          variant="subtitle1"
-          align="center"
-          color="text.secondary"
-          component="p"
-        >
-          Something here to give the footer a purpose!
-        </Typography>
-        <Copyright />
-      </Box>
-      {/* End footer */}
+
     </ThemeProvider>
     
     </>

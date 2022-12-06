@@ -96,8 +96,6 @@ export default function Details() {
             <tr>
                 <th>Studio name</th>
                 <th>Address</th>
-                <th>Longitude</th>
-                <th>Latitude</th>
                 <th>Postal Code</th>
                 <th>Phone Number</th>
                 <th>Distance (km)</th>
@@ -111,11 +109,9 @@ export default function Details() {
                    
                     <td style={{margin: 14}}>{ info.name }</td>
                     <td>{ info.address }</td>
-                    <td>{ info.longitude }</td>
-                    <td>{ info.latitude }</td>
                     <td>{ info['postal code'] }</td>
                     <td>{ info['phone number'] }</td>
-                    <td>{ info['distance (km)'] }</td>
+                    <td>{ Math.round(info['distance (km)']) }</td>
                          
                    
                 </tr>

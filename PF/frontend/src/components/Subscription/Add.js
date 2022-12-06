@@ -1,24 +1,18 @@
 import { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-
 import * as React from 'react';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
+
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { Rsvp } from '@mui/icons-material';
 
 
 const theme = createTheme();
@@ -52,7 +46,7 @@ export default function Add() {
             method: 'GET', headers: { 'Authorization': `Bearer ${token}` }
         })
             .then(response => {
-                if(response.status === 200) setRedirect(true)
+                if (response.status === 200) setRedirect(true)
                 return
             })
     }, [])
@@ -84,7 +78,7 @@ export default function Add() {
         setSelect(event.target.value)
     }
 
-    
+
     if (!token) return <Navigate to='/login' />
     if (redirect) return <Navigate to='/subscription/edit' />
     if (!plans) return
@@ -143,5 +137,4 @@ export default function Add() {
             </Container>
         </ThemeProvider>
     );
-
 }

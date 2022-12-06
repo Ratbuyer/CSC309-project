@@ -44,6 +44,8 @@ const UserClassHistory = () => {
 	return (
 		<>
 			<h1>My Class History</h1>
+			{classes.length === 0 ? <h2>You have no history</h2> : null}
+
 			<ScheduleTable classes={classes} isUser={true} isHitory={true} />
 			<SchedulePagination
 				lastpage={Math.ceil(totalItem / 10)}

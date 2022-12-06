@@ -118,7 +118,7 @@ export default function Edit() {
 
     const handleClick = () => {
         const confirmBox = window.confirm(
-            "Do you really want to delete this Crumb?"
+            "Do you really want to delete your subscription?"
         )
 
         if (confirmBox) {

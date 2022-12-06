@@ -13,10 +13,13 @@ import UserSchedule from './components/Classes/UserClassSchedule';
 import UserClassHistory from './components/Classes/UserClassHistory';
 import Add from './components/Subscription/Add'
 import Edit from './components/Subscription/Edit'
+import History from './components/Payment/History'
+
 
 const MainPage = () => {
     return <h2 style={{ textAlign: 'centre' }}>Main Page</h2>
 };
+
 
 function App() {
 	let routes = (
@@ -33,6 +36,7 @@ function App() {
 			<Route path="/class-history" element={<UserClassHistory />} exact></Route>
             <Route path="/subscription/add" element={<Add />}></Route>
             <Route path="/subscription/edit" element={<Edit />}></Route>
+            <Route path="/payment/history" element={<History />}></Route>
 		</Routes>
 	);
 
@@ -40,9 +44,7 @@ function App() {
     return (<BrowserRouter>
         <MainNavigation />
         <main>
-
             {routes}
-
         </main>
     </BrowserRouter>
     )

@@ -19,3 +19,7 @@ table, th {
     margin-right: auto;
     width: 50%;
   }
+
+.direction {
+  text-align: center;
+}

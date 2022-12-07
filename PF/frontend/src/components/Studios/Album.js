@@ -164,7 +164,7 @@ export default function Album() {
       <main>
         
 
-        <p id="demo"></p>
+        
 
         {/* Hero unit */}
         <Box
@@ -201,7 +201,7 @@ export default function Album() {
 
         </Box>
         
-      
+      <p id="demo"></p>
         <Container sx={{ py: 8 }} maxWidth="md">
           {/* End hero unit */}
 

@@ -7,33 +7,24 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
-
+import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { Link } from 'react-router-dom';
+//import { Link } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import './Details.css';
+import { OpenInBrowser } from '@mui/icons-material';
 
-function Copyright() {
-	return (
-		<Typography variant="body2" color="text.secondary" align="center">
-			{'Copyright © '}
-			<Link color="inherit" href="https://mui.com/">
-				Your Website
-			</Link>{' '}
-			{new Date().getFullYear()}
-			{'.'}
-		</Typography>
-	);
-}
 
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 const theme = createTheme();
 
 export default function Details() {
 	const studioId = useParams().studioId;
 	const [info, setInfo] = useState();
+  const [longitude, setLongitude] = useState();
+  const [latitude, setLatitude] = useState();
+  
 
 	let navigate = useNavigate();
 
@@ -45,11 +36,58 @@ export default function Details() {
 			});
 	}, [studioId]);
 
+  getLocation();
+
+  var x = document.getElementById("demo");
+
+    function getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition, showError);
+        
+      } else { 
+        x.innerHTML = "Geolocation is not supported by this browser.";
+      }
+    }
+
+    function showPosition(position) {
+      
+      if (x) {
+        setLongitude(position.coords.longitude);
+        setLatitude(position.coords.latitude);
+      }
+      
+    }
+
+    function showError(error) {
+      switch(error.code) {
+        case error.PERMISSION_DENIED:
+          x.innerHTML = "User denied the request for Geolocation." + " <a href='https://support.google.com/chrome/answer/142065?hl=en'>Please enable this feature in setting.</a>"
+          break;
+        case error.POSITION_UNAVAILABLE:
+          x.innerHTML = "Location information is unavailable."
+          break;
+        case error.TIMEOUT:
+          x.innerHTML = "The request to get user location timed out."
+          break;
+        case error.UNKNOWN_ERROR:
+          x.innerHTML = "An unknown error occurred."
+          break;
+      }
+    }
+
+  const openInNewTab = url => {
+    window.open(url, '_blank', 'noopener,noreferrer');
+  };
+
+
+
 	return (
 		<ThemeProvider theme={theme}>
+     
 			<CssBaseline />
 
 			<main>
+        
 				{/* Hero unit */}
 				<Box
 					sx={{
@@ -88,11 +126,24 @@ export default function Details() {
 							>
 								Class Schedule
 							</Button>
+              {info && longitude && latitude && <Button variant="outlined" onClick={() => openInNewTab(`
+https://www.google.com/maps/dir/?api=1&origin=${latitude},${longitude}&destination=${info.latitude},${info.longitude}&travelmode=Yourmode`)}>
+              To this place</Button>}
 						</Stack>
+  
+          
 					</Container>
+
 				</Box>
+
+
+
 				<Container sx={{ py: 8 }} maxWidth="md">
 					{/* End hero unit */}
+          <p id="demo"></p>
+          
+
+
 					<table>
 						<thead>
 							<tr>
@@ -142,27 +193,12 @@ export default function Details() {
 					{info &&
 						info.images !== [] &&
 						info.images.map((x, index) => (
-							<img class="center" src={x} alt="" width="500" height="600" />
+							<img key={index} class="center" src={x} alt="" width="500" height="600" />
 						))}
 				</Container>
 			</main>
 
-			{/* Footer */}
-			<Box sx={{ bgcolor: 'background.paper', p: 6 }} component="footer">
-				<Typography variant="h6" align="center" gutterBottom>
-					Footer
-				</Typography>
-				<Typography
-					variant="subtitle1"
-					align="center"
-					color="text.secondary"
-					component="p"
-				>
-					Something here to give the footer a purpose!
-				</Typography>
-				<Copyright />
-			</Box>
-			{/* End footer */}
+		
 		</ThemeProvider>
 	);
 }

@@ -146,7 +146,7 @@ const StudioSchedule = () => {
 				if (response.status === 404) {
 					navigate('/studios');
 				}
-				response.json();
+				return response.json();
 			})
 			.then((json) => {
 				setClasses(json.results);

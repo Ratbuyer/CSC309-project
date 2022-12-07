@@ -17,7 +17,7 @@ function DateFilter({ query, setQuery }) {
 					inputFormat="YYYY/MM/DD"
 					value={query.start_date}
 					onChange={(newValue) => {
-						setQuery({ ...query, start_date: newValue });
+						setQuery({ ...query, offset: 0, start_date: newValue });
 					}}
 					renderInput={(params) => <TextField {...params} />}
 				/>
@@ -26,7 +26,7 @@ function DateFilter({ query, setQuery }) {
 					inputFormat="YYYY/MM/DD"
 					value={query.end_date}
 					onChange={(newValue) => {
-						setQuery({ ...query, end_date: newValue });
+						setQuery({ ...query, offset: 0, end_date: newValue });
 					}}
 					renderInput={(params) => <TextField {...params} />}
 				/>
@@ -42,7 +42,7 @@ function TimeFilter({ query, setQuery }) {
 				label="Start Time"
 				value={query.start_time}
 				onChange={(newValue) => {
-					setQuery({ ...query, start_time: newValue });
+					setQuery({ ...query, offset: 0, start_time: newValue });
 				}}
 				renderInput={(params) => <TextField {...params} />}
 			/>
@@ -50,7 +50,7 @@ function TimeFilter({ query, setQuery }) {
 				label="End Time"
 				value={query.end_time}
 				onChange={(newValue) => {
-					setQuery({ ...query, end_time: newValue });
+					setQuery({ ...query, offset: 0, end_time: newValue });
 				}}
 				renderInput={(params) => <TextField {...params} />}
 			/>

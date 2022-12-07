@@ -1,7 +1,4 @@
 
-import AppBar from '@mui/material/AppBar';
-import Button from '@mui/material/Button';
-import CameraIcon from '@mui/icons-material/PhotoCamera';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -19,10 +16,9 @@ import React, {useState, useEffect, useMemo} from "react";
 import { Link } from 'react-router-dom';
 import './Album.css';
 import {GoogleMap, useLoadScript, MarkerF} from '@react-google-maps/api';
-//import Map from './Map';
-
-
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+import TextField from '@mui/material/TextField';
+import Input from './Input';
+import Button from '@mui/material/Button';
 
 const theme = createTheme();
 
@@ -32,62 +28,33 @@ export default function Album() {
     
     const {isLoaded} = useLoadScript({googleMapsApiKey: "AIzaSyA7SCCkx8BeyK13Jo-NDiGPkCDqxjpGt14"});
 
+    const [query, setQuery] = useState({
+      search: '', 
+      page: 0,
+      class_name: '',
+      class_coach: '',
+      amenity_type: '',
+      name: ''
+    });
+
+ 
+    const [totalItem, setTotalItem] = useState(1);
     const [longitude, setLongitude] = useState(0);
     const [latitude, setLatitude] = useState(0);
     const [studios, setStudios] = useState();
 
-    const [markers, setMarkers] = useState()
-
-    //const markerTest = useMemo(() => ({ lat: 44, lng: 80 }), []); 
-
-    
-    useEffect(() => {
-      if (studios) {
-       
-        <GoogleMap zoom={10} center={{lat: 44, lng: -80}} mapContainerClassName="map-container">
-            {
-            studios.map((studio, index) => {
-            <MarkerF key={index} name={studio.name} position={{lat: studio.latitude, lng: studio.longitude}} />
-            })}
-        </GoogleMap>
-       
-      }
-    }, [isLoaded, studios]);
   
-
-    
-    const getMarkers = () => {
-      return (
-          studios.map((studio, index) => {
-          <MarkerF key={Math.random()} name={studio.name} position={{lat: studio.latitude, lng: studio.longitude}} />
-     
-          }));
-    }
-
-
-    const updateLongitude = value => {
-        if (value) {
-            setLongitude(value);
-        }  
-    }
-
-    const updateLatitude = value => {
-        if (value) {
-            setLatitude(value);
-        } 
-    }
-
-    
-
     getLocation();
     
     useEffect(() => {
-         fetch(`http://127.0.0.1:8000/studios/all/?longitude=${longitude}&latitude=${latitude}`)
+         fetch(`http://127.0.0.1:8000/studios/all/?search=${query.search}&class_name=${query.class_name}&class_coach=${query.class_coach}&amenity_type=${query.amenity_type}&longitude=${longitude}&latitude=${latitude}&name=${query.name}&offset=${query.page * 10}`)
         .then(res => res.json())
-        .then(json => {setStudios(json.results)})
+        .then(json => {setStudios(json.results)
+          setTotalItem(json.count);
+        })
       
         
-    }, [longitude, latitude])
+    }, [longitude, latitude, query])
 
 
     var x = document.getElementById("demo");
@@ -134,12 +101,68 @@ export default function Album() {
 
   return (
     <>
+    <h1>Search</h1>
     
+
+    <TextField
+				id="outlined-basic"
+				label="Studio, Amenity, Class, Coach"
+				variant="outlined"
+				onChange={(event) => {
+					
+            setQuery({...query, search: event.target.value, page: 0});
+				}}
+			/>
+
+    <h1>Filter</h1>
+      <TextField
+				id="outlined-basic"
+				label="Studio Name"
+				variant="outlined"
+				onChange={(event) => {
+					setQuery({...query, name: event.target.value, page: 0});
+           
+				}}
+			/>
+    
+    <TextField
+				id="outlined-basic"
+				label="Class Name"
+				variant="outlined"
+				onChange={(event) => {
+					setQuery({...query, class_name: event.target.value, page: 0});
+           
+				}}
+			/>
+
+    <TextField
+				id="outlined-basic"
+				label="Class Coach"
+				variant="outlined"
+				onChange={(event) => {
+					setQuery({...query, class_coach: event.target.value, page: 0});
+           
+				}}
+			/>
+
+    <TextField
+				id="outlined-basic"
+				label="Amenity Type"
+				variant="outlined"
+				onChange={(event) => {
+					setQuery({...query, amenity_type: event.target.value, page: 0});
+           
+				}}
+			/>
+    
+    
+
     <ThemeProvider theme={theme}> 
     
       <CssBaseline />
       
       <main>
+        
 
         <p id="demo"></p>
 
@@ -186,14 +209,10 @@ export default function Album() {
         
         {isLoaded && studios &&
             <GoogleMap zoom={10} center={{lat: 44, lng: -80}} mapContainerClassName="map-container">
-              <MarkerF key={1} position={{lat: 35, lng:53}}></MarkerF>
-              {
+              
+              {          
               studios.map((studio, index) => {
-              console.log(studio.latitude,  studio.longitude);
-                
-              
-              <MarkerF key={Math.random()} name={studio.name} position={{lat: studio.latitude, lng: studio.longitude}} />
-              
+               return <MarkerF key={index} position={{lat: studio.latitude, lng: studio.longitude}}></MarkerF>     
               })}
             </GoogleMap>  
         }  
@@ -203,9 +222,8 @@ export default function Album() {
           
 
           <Grid container spacing={4}>
-
-            
-            {studios && studios.map((card, index) => (
+   
+            {studios && studios.map((studio, index) => (
               
               <Grid item key={index} xs={12} sm={6} md={4}>
 
@@ -223,16 +241,16 @@ export default function Album() {
                   />
                   <CardContent sx={{ flexGrow: 1 }}>
                     <Typography gutterBottom variant="h5" component="h2">
-                      {card.name}
+                      {studio.name}
                     </Typography>
                     <Typography>
                       
-                      Address: {card.address} <br/>
-                      Distance from you: {Math.round(card.distance)}
+                      Address: {studio.address} <br/>
+                      Distance from you: {Math.round(studio.distance)}
                     </Typography>
                   </CardContent>
                   <CardActions>
-                    <Link to={`${card.id}/details`} size="small">View</Link>
+                    <Link to={`${studio.id}/details`} size="small">View</Link>
                   </CardActions>
                 </Card>
 
@@ -243,6 +261,13 @@ export default function Album() {
         </Container>
       </main>
       
+      {query.page > 0 ? <Button variant="contained" onClick={() => setQuery({...query, page: query.page - 1})}>
+					Prev
+			</Button> : <></>}
+      
+      {query.page < Math.ceil(totalItem / 10) - 1 ? <Button variant="contained" onClick={() => setQuery({...query, page: query.page + 1})}>
+					Next
+			</Button> : <></>}
 
     </ThemeProvider>
     

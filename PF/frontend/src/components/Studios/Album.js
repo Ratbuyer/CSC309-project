@@ -26,7 +26,7 @@ const theme = createTheme();
 
 export default function Album() {
 
-    let info;
+   
     
     const {isLoaded} = useLoadScript({googleMapsApiKey: "AIzaSyA7SCCkx8BeyK13Jo-NDiGPkCDqxjpGt14"});
 
@@ -196,25 +196,17 @@ export default function Album() {
                 <Card
                   sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
                 >
-                  { 
-                  fetch(`http://127.0.0.1:8000/studios/${studio.id}/details`)
-                    .then((res) => res.json())
-                    .then((json) => {
-                      info = json;
-                    })
-                  }
-                  
-                  {info &&
-                  info.images !== [] &&
-                        <CardMedia
+
+              
+                  <CardMedia
                         component="img"
                         sx={{
                           // 16:9
                           pt: '16.25%',
                         }}
-                        image={info.images[0]}
+                        src={require('./gym.jpg')}
                         alt="random"
-                  />}
+                  />
                   <CardContent sx={{ flexGrow: 1 }}>
                     <Typography gutterBottom variant="h5" component="h2">
                       {studio.name}

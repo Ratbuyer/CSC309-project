@@ -108,17 +108,11 @@ export default function Album() {
     }
 
   if (!studios) return <></>;
-  //if (!latitude || !longitude) return <></>;
+
 
 
   return (
     <>
-   
-    
-    
-    
-    
-    
 
     <ThemeProvider theme={theme}> 
     
@@ -180,7 +174,7 @@ export default function Album() {
             </GoogleMap>  
         }  
         
-              <div className="search-bar">
+              <div className="searching">
                   <h1 id='search'>Search</h1><br />
 
                   <TextField

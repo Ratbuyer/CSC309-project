@@ -43,7 +43,10 @@ export default function Login() {
         .catch(() => {})
     };
 
-    if (profile) return <Navigate to='/profile' />
+    if (profile) {
+        window.location.reload(false)
+        return <Navigate to='/profile' />
+    }
 
     return (
         <ThemeProvider theme={theme}>

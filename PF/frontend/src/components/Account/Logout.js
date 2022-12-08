@@ -6,5 +6,7 @@ export default function Logout() {
         localStorage.removeItem('token')
     }
 
+    window.location.reload(false)
+
     return <Navigate to='/login' />
 }

@@ -11,27 +11,10 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import * as React from 'react';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Select from '@mui/material/Select';
 
 
 const theme = createTheme();
-
-function Subscription() {
-
-    const token = localStorage.getItem('token')
-
-    useEffect(() => {
-        fetch('http://localhost:8000/subscription/manage/', {
-            method: 'GET', headers: { 'Authorization': `Bearer ${token}` }
-        })
-            .then(response => {
-
-            })
-    }, [])
-
-}
-
 
 export default function Add() {
 

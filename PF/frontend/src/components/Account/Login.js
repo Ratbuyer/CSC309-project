@@ -12,10 +12,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { useState } from 'react';
 
-
-
 const theme = createTheme()
-
 
 export default function Login() {
 	const [error, setError] = useState([]);

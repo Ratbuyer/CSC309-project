@@ -5,8 +5,6 @@ import * as React from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar'
 import Container from '@mui/material/Container';
@@ -22,258 +20,292 @@ const theme = createTheme();
 
 const Success = () => {
 
-    const [open, setOpen] = React.useState(true);
+   const [open, setOpen] = React.useState(true);
 
-    return (
-        <Box sx={{ width: '100%' }}>
-            <Collapse in={open}>
-                <Alert
-                    action={
-                        <IconButton
-                            aria-label="close"
-                            color="inherit"
-                            size="small"
-                            onClick={() => {
-                                setOpen(false);
-                            }}
-                        >
-                            <CloseIcon fontSize="inherit" />
-                        </IconButton>
-                    }
-                    sx={{ mb: 2 }}
-                >
-                    your changes has been made
-                </Alert>
-            </Collapse>
-        </Box>
-    );
+   return (
+      <Box sx={{ width: '100%' }}>
+         <Collapse in={open}>
+            <Alert
+               action={
+                  <IconButton
+                     aria-label="close"
+                     color="inherit"
+                     size="small"
+                     onClick={() => {
+                        setOpen(false);
+                     }}
+                  >
+                     <CloseIcon fontSize="inherit" />
+                  </IconButton>
+               }
+               sx={{ mb: 2 }}
+            >
+               your changes has been made
+            </Alert>
+         </Collapse>
+      </Box>
+   );
 }
 
 const Edit = ({ account }) => {
 
 
-    const [success, setSuccess] = useState(false)
+   const [success, setSuccess] = useState(false)
 
-    const [user, setUser] = useState(account)
+   const [user, setUser] = useState(account)
 
-    const [ispasswordError, setIspasswordError] = useState(false)
-    const [passwordError, setPasswordError] = useState('')
+   const [ispasswordError, setIspasswordError] = useState(false)
+   const [passwordError, setPasswordError] = useState('')
 
-    const [ispassword2Error, setIspassword2Error] = useState(false)
-    const [password2Error, setPassword2Error] = useState('')
+   const [ispassword2Error, setIspassword2Error] = useState(false)
+   const [password2Error, setPassword2Error] = useState('')
 
-    const [isemailError, setIsemailError] = useState(false)
-    const [emailError, setEmailError] = useState('')
+   const [isemailError, setIsemailError] = useState(false)
+   const [emailError, setEmailError] = useState('')
 
-    const [isphoneError, setIsphoneError] = useState(false)
-    const [phoneError, setPhoneError] = useState('')
+   const [isphoneError, setIsphoneError] = useState(false)
+   const [phoneError, setPhoneError] = useState('')
 
-    const [isavatarError, setIsavatarError] = useState(false)
-    const [avatarError, setAvatarError] = useState(false)
+   const [isavatarError, setIsavatarError] = useState(false)
+   const [avatarError, setAvatarError] = useState(false)
 
-    const handleSubmit = (event) => {
-        setSuccess(false)
-        const token = localStorage.getItem('token')
-        event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        fetch('http://localhost:8000/accounts/profile/', {
-            method: 'PUT', body: data, headers: { 'Authorization': `Bearer ${token}` }
-        })
-            .then(response => response.json())
-            .then(json => {
+   const [password, setPassword] = useState('')
+   const [password2, setPassword2] = useState('')
 
-                if (json.username) {
-                    setSuccess(true)
-                    setUser(json)
+   
+   const handlePhone = (event) => {
+      if (isNaN(event.target.value) || event.target.value.length !== 10) {
+         setIsphoneError(true)
+         setPhoneError('phone number is invalid')
+         return
+      }
+      setIsphoneError(false)
+      setPhoneError('')
+   }
 
-                    setIspasswordError(false)
-                    setIspassword2Error(false)
-                    setIsemailError(false)
-                    setIsphoneError(false)
-                    setIsavatarError(false)
+   const updatePassword = (event) => { setPassword(event.target.value) }
 
-                    setPasswordError('')
-                    setPassword2Error('')
-                    setEmailError('')
-                    setPhoneError('')
-                    setAvatarError('')
-                    return
-                }
+   const updatePassword2 = (event) => { setPassword2(event.target.value) }
 
-                setSuccess(false)
+   useEffect(() => {
+      if (password !== password2 && password && password2) {
+         setIspassword2Error(true)
+         setPassword2Error('passwords do not match')
+         return
+      }
 
-                if (json.password) {
-                    setIspasswordError(true)
-                    setPasswordError(json.password)
-                } else setIspasswordError(false)
+      setIspassword2Error(false)
+      setPassword2Error('')
 
-                if (json.password2 || json.passwords) {
-                    setIspassword2Error(true)
-                    if (json.password2) {
-                        setPassword2Error(json.password2)
-                    } else if (json.passwords) {
-                        setPassword2Error(json.passwords)
-                    }
-                } else setIspassword2Error(false)
+   }, [password, password2])
 
-                if (json.email) {
-                    setIsemailError(true)
-                    setEmailError(json.email)
-                } else setIsemailError(false)
+   const handleSubmit = (event) => {
 
-                if (json.phone) {
-                    setIsphoneError(true)
-                    setPhoneError(json.phone)
-                } else setIsphoneError(false)
+      setSuccess(false)
+      const token = localStorage.getItem('token')
+      event.preventDefault();
+      const data = new FormData(event.currentTarget);
+      fetch('http://localhost:8000/accounts/profile/', {
+         method: 'PUT', body: data, headers: { 'Authorization': `Bearer ${token}` }
+      })
+         .then(response => response.json())
+         .then(json => {
 
-                if (json.avatar) {
-                    setIsavatarError(true)
-                    setAvatarError(json.avatar)
-                } else {
-                    setIsavatarError(false)
-                    setAvatarError('')
-                }
-            })
-            .catch(() => { })
-    };
+            if (json.username) {
+               setSuccess(true)
+               setUser(json)
 
-    return (
-        <ThemeProvider theme={theme}>
-            <Container component="main" maxWidth="xs">
-                <CssBaseline />
+               setIspasswordError(false)
+               setIspassword2Error(false)
+               setIsemailError(false)
+               setIsphoneError(false)
+               setIsavatarError(false)
 
-                <Box
-                    sx={{
-                        marginTop: 8,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                    }}
-                >
-                    <h1> Welcome, {user.username}</h1>
-                    <span>Fill the form below to edit your profile</span>
+               setPasswordError('')
+               setPassword2Error('')
+               setEmailError('')
+               setPhoneError('')
+               setAvatarError('')
+               return
+            }
 
-                    <Avatar src={user.avatar}></Avatar>
+            setSuccess(false)
 
-                    <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
+            if (json.password) {
+               setIspasswordError(true)
+               setPasswordError(json.password)
+            } else setIspasswordError(false)
 
-                        <TextField
-                            error={ispasswordError}
-                            helperText={passwordError}
-                            size='small'
-                            margin="normal"
-                            fullWidth
-                            name="password"
-                            label="password"
-                            type="password"
-                            id="password"
-                        />
+            if (json.password2 || json.passwords) {
+               setIspassword2Error(true)
+               if (json.password2) {
+                  setPassword2Error(json.password2)
+               } else if (json.passwords) {
+                  setPassword2Error(json.passwords)
+               }
+            } else setIspassword2Error(false)
 
-                        <TextField
-                            error={ispassword2Error}
-                            helperText={password2Error}
-                            size='small'
-                            margin="normal"
-                            fullWidth
-                            name="password2"
-                            label="repeat password"
-                            type="password"
-                            id="password2"
-                        />
+            if (json.email) {
+               setIsemailError(true)
+               setEmailError(json.email)
+            } else setIsemailError(false)
 
-                        <TextField
-                            error={isemailError}
-                            helperText={emailError}
-                            size='small'
-                            margin="normal"
-                            fullWidth
-                            name="email"
-                            label="email"
-                            type="email"
-                            id="email"
-                            defaultValue={user.email}
-                        />
+            if (json.phone) {
+               setIsphoneError(true)
+               setPhoneError(json.phone)
+            } else setIsphoneError(false)
 
-                        <TextField
-                            size='small'
-                            margin="normal"
-                            fullWidth
-                            id="first_name"
-                            label="first name"
-                            name="first_name"
-                            defaultValue={user.first_name}
-                        />
+            if (json.avatar) {
+               setIsavatarError(true)
+               setAvatarError(json.avatar)
+            } else {
+               setIsavatarError(false)
+               setAvatarError('')
+            }
+         })
+         .catch(() => { })
+   };
 
-                        <TextField
-                            size='small'
-                            margin="normal"
-                            fullWidth
-                            id="last_name"
-                            label="last name"
-                            name="last_name"
-                            defaultValue={user.last_name}
-                        />
+   return (
+      <ThemeProvider theme={theme}>
+         <Container component="main" maxWidth="xs">
+            <CssBaseline />
 
-                        <TextField
-                            error={isphoneError}
-                            helperText={phoneError}
-                            size='small'
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="phone"
-                            label="phone number - exactly 10 integers"
-                            name="phone"
-                            defaultValue={user.phone}
-                        />
+            <Box
+               sx={{
+                  marginTop: 8,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+               }}
+            >
+               <h1> Welcome, {user.username}</h1>
+               <span>Fill the form below to edit your profile</span>
 
-                        {isavatarError ? <div style={{ color: 'red', margin: 10 }}> {avatarError} </div> : null}
+               <Avatar src={user.avatar}></Avatar>
 
-                        <label>Select new avatar</label>
-                        <input accept="image/*" type="file" name='avatar' id='avatar' />
+               <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
 
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            sx={{ mt: 3, mb: 2 }}
-                        >
-                            Click to change your profile
-                        </Button>
+                  <TextField
+                     error={ispasswordError}
+                     helperText={passwordError}
+                     size='small'
+                     margin="normal"
+                     fullWidth
+                     name="password"
+                     label="password"
+                     type="password"
+                     id="password"
+                     onChange={updatePassword}
+                  />
 
-                        {success ? <Success /> : null}
-                    </Box>
-                </Box>
-            </Container>
-        </ThemeProvider>
-    );
+                  <TextField
+                     error={ispassword2Error}
+                     helperText={password2Error}
+                     size='small'
+                     margin="normal"
+                     fullWidth
+                     name="password2"
+                     label="repeat password"
+                     type="password"
+                     id="password2"
+                     onChange={updatePassword2}
+                  />
+
+                  <TextField
+                     error={isemailError}
+                     helperText={emailError}
+                     size='small'
+                     margin="normal"
+                     fullWidth
+                     name="email"
+                     label="email"
+                     type="email"
+                     id="email"
+                     defaultValue={user.email}
+                  />
+
+                  <TextField
+                     size='small'
+                     margin="normal"
+                     fullWidth
+                     id="first_name"
+                     label="first name"
+                     name="first_name"
+                     defaultValue={user.first_name}
+                  />
+
+                  <TextField
+                     size='small'
+                     margin="normal"
+                     fullWidth
+                     id="last_name"
+                     label="last name"
+                     name="last_name"
+                     defaultValue={user.last_name}
+                  />
+
+                  <TextField
+                     error={isphoneError}
+                     helperText={phoneError}
+                     size='small'
+                     margin="normal"
+                     required
+                     fullWidth
+                     id="phone"
+                     label="phone number - exactly 10 integers"
+                     name="phone"
+                     defaultValue={user.phone}
+                     onChange={handlePhone}
+                  />
+
+                  {isavatarError ? <div style={{ color: 'red', margin: 10 }}> {avatarError} </div> : null}
+
+                  <label>Select new avatar</label>
+                  <input accept="image/*" type="file" name='avatar' id='avatar' />
+
+                  <Button
+                     type="submit"
+                     fullWidth
+                     variant="contained"
+                     sx={{ mt: 3, mb: 2 }}
+                  >
+                     Click to change your profile
+                  </Button>
+
+                  {success ? <Success /> : null}
+               </Box>
+            </Box>
+         </Container>
+      </ThemeProvider>
+   );
 }
 
 
 export default function Profile() {
 
-    const [data, setData] = useState()
-    const [redirect, setRedirect] = useState(false)
+   const [data, setData] = useState()
+   const [redirect, setRedirect] = useState(false)
 
-    const token = localStorage.getItem('token')
+   const token = localStorage.getItem('token')
 
-    useEffect(() => {
-        fetch('http://localhost:8000/accounts/profile/', {
-            method: 'GET', headers: { 'Authorization': `Bearer ${token}` }
-        })
-            .then(response => {
-                if (response.status == 200) return response.json()
-                else setRedirect(true)
-            })
-            .then(json => setData(json))
+   useEffect(() => {
+      fetch('http://localhost:8000/accounts/profile/', {
+         method: 'GET', headers: { 'Authorization': `Bearer ${token}` }
+      })
+         .then(response => {
+            if (response.status == 200) return response.json()
+            else setRedirect(true)
+         })
+         .then(json => setData(json))
 
-    }, [])
+   }, [])
 
-    if (redirect) return <Navigate to='/login' />
+   if (redirect) return <Navigate to='/login' />
 
-    if (!data) return <center><h1>Loading ...</h1></center>
+   if (!data) return <center><h1>Loading ...</h1></center>
 
-    return <>
-        <Edit account={data} />
-    </>
+   return <>
+      <Edit account={data} />
+   </>
 }

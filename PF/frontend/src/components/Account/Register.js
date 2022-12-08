@@ -103,12 +103,11 @@ export default function Register() {
    }
 
 
-   const updatePassword = (event) => {setPassword(event.target.value)}
+   const updatePassword = (event) => { setPassword(event.target.value) }
+
+   const updatePassword2 = (event) => { setPassword2(event.target.value) }
 
 
-   const updatePassword2 = (event) => {setPassword2(event.target.value)}
-
-   
    useEffect(() => {
       if (password !== password2) {
          setIspassword2Error(true)

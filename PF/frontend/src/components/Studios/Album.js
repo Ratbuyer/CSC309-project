@@ -209,7 +209,7 @@ export default function Album() {
                     component="img"
                     sx={{
                       // 16:9
-                      pt: '56.25%',
+                      pt: '16.25%',
                     }}
                     image="https://source.unsplash.com/random"
                     alt="random"
@@ -221,7 +221,7 @@ export default function Album() {
                     <Typography>
                       
                       Address: {studio.address} <br/>
-                      Distance from you (km): {Math.round(studio.distance * 100) / 100}
+                      Distance from you (km): {Math.round(studio.distance * 10) / 10}
                     </Typography>
                   </CardContent>
                   <CardActions>

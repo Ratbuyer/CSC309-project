@@ -90,7 +90,7 @@ const NavLinks = (props) => {
 	return (
 		<ul className="nav-links">
 			<li>
-				<NavLink to="/studios">STUDIOS</NavLink>
+				<NavLink to="/studios" onClick={() => window.location.replace('/studios')}>STUDIOS</NavLink>
 			</li>
 			<li>
 				<NavLink to="/classes/1">CLASSES</NavLink>

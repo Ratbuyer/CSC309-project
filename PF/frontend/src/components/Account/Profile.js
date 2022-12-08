@@ -241,14 +241,6 @@ const Edit = ({ account }) => {
                             Click to change your profile
                         </Button>
 
-                        <Grid container>
-                            <Grid item>
-                                <Link href="/payment/history" variant="body2">
-                                    {"Click here to view payment history"}
-                                </Link>
-                            </Grid>
-                        </Grid>
-
                         {success ? <Success /> : null}
                     </Box>
                 </Box>

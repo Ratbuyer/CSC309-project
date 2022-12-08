@@ -12,14 +12,9 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { useState } from 'react';
 
-import orange from '@mui/material/colors/orange'
 
 
-const theme = createTheme({
-   palette: {
-     primary: {main: '#ed6c02'}
-   },
- });
+const theme = createTheme()
 
 
 export default function Login() {

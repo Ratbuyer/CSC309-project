@@ -13,6 +13,10 @@
     height: 60vh;
 }
 
+.input {
+    width: 50%;
+}
+
 .searching {
 
     padding-top: 100px;

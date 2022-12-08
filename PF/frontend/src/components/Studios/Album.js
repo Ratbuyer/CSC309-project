@@ -175,6 +175,7 @@ export default function Album() {
                   <h1 id='search'>Search</h1><br />
 
                   <TextField
+                      className='input'
                       id="outlined-basic"
                       label="Studio, Amenity, Class, Coach"
                       variant="outlined"

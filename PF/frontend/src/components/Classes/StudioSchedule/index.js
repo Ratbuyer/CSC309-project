@@ -12,11 +12,11 @@ import SearchIcon from '@mui/icons-material/Search';
 import { InputAdornment } from '@mui/material';
 import Stack from '@mui/material/Stack';
 
-import './style.css';
+import './StudioSchedule.css';
 
 function SearchStack({ query, setQuery }) {
 	return (
-		<div className="search-bar">
+		<div className="schedule-search-bar">
 			<Stack direction="row" spacing={2}>
 				<Search query={query} setQuery={setQuery} />
 				<DateFilter query={query} setQuery={setQuery} />
@@ -167,11 +167,6 @@ const StudioSchedule = () => {
 	return (
 		<>
 			<h1 className="schedule-title">Class Schedule</h1>
-			{classes.length === 0 ? (
-				<h2 className="no-class-messages">
-					Sorry, there are no classes available in this studio.
-				</h2>
-			) : null}
 
 			<SearchStack query={query} setQuery={setQuery} />
 			<ScheduleTable

@@ -26,7 +26,7 @@ const theme = createTheme();
 
 export default function Album() {
 
- 
+    let info;
     
     const {isLoaded} = useLoadScript({googleMapsApiKey: "AIzaSyA7SCCkx8BeyK13Jo-NDiGPkCDqxjpGt14"});
 
@@ -46,7 +46,7 @@ export default function Album() {
     const [latitude, setLatitude] = useState(0);
     const [studios, setStudios] = useState();
     const [whetherGetLocation, setWhetherGetLocation] = useState(false);
-
+    //const [info, setInfo] = useState();
     
   
     getLocation();
@@ -119,9 +119,6 @@ export default function Album() {
       <CssBaseline />
       
       <main>
-        
-
-        
 
         {/* Hero unit */}
         <Box
@@ -199,15 +196,25 @@ export default function Album() {
                 <Card
                   sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
                 >
-                  <CardMedia
-                    component="img"
-                    sx={{
-                      // 16:9
-                      pt: '16.25%',
-                    }}
-                    image="https://source.unsplash.com/random"
-                    alt="random"
-                  />
+                  { 
+                  fetch(`http://127.0.0.1:8000/studios/${studio.id}/details`)
+                    .then((res) => res.json())
+                    .then((json) => {
+                      info = json;
+                    })
+                  }
+                  
+                  {info &&
+                  info.images !== [] &&
+                        <CardMedia
+                        component="img"
+                        sx={{
+                          // 16:9
+                          pt: '16.25%',
+                        }}
+                        image={info.images[0]}
+                        alt="random"
+                  />}
                   <CardContent sx={{ flexGrow: 1 }}>
                     <Typography gutterBottom variant="h5" component="h2">
                       {studio.name}

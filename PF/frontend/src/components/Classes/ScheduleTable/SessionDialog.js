@@ -4,7 +4,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { KeywordsToString } from '.';
+import { KeywordsToString } from './ScheduleTable';
 import EnrollClass from '../Enroll/EnrollClass';
 import DropClass from '../Drop/DropClass';
 import { useNavigate } from 'react-router-dom';

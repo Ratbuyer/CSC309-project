@@ -1,12 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import ScheduleTable from '../ScheduleTable';
+import ScheduleTable from '../ScheduleTable/ScheduleTable';
 import Pagination from '@mui/material/Pagination';
 import TextField from '@mui/material/TextField';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+import SchedulePagination from '../Pagination/Pagination';
+import SearchIcon from '@mui/icons-material/Search';
+import { InputAdornment } from '@mui/material';
+import Stack from '@mui/material/Stack';
+
+import './style.css';
+
+function SearchStack({ query, setQuery }) {
+	return (
+		<div className="search-bar">
+			<Stack direction="row" spacing={2}>
+				<Search query={query} setQuery={setQuery} />
+				<DateFilter query={query} setQuery={setQuery} />
+				<TimeFilter query={query} setQuery={setQuery} />
+			</Stack>
+		</div>
+	);
+}
 
 function DateFilter({ query, setQuery }) {
 	return (
@@ -59,28 +77,20 @@ function TimeFilter({ query, setQuery }) {
 }
 const Search = ({ query, setQuery }) => {
 	return (
-		<>
-			<TextField
-				id="outlined-basic"
-				label="Name, Coach, Category..."
-				variant="outlined"
-				onChange={(event) => {
-					setQuery({ ...query, offset: 0, search: event.target.value });
-				}}
-			/>
-			<DateFilter query={query} setQuery={setQuery} />
-			<TimeFilter query={query} setQuery={setQuery} />
-		</>
-	);
-};
-
-const SchedulePagination = ({ lastpage, query, setQuery }) => {
-	return (
-		<Pagination
-			count={lastpage}
-			defaultPage={1}
-			onChange={(event, value) => {
-				setQuery({ ...query, offset: (value - 1) * 10 });
+		<TextField
+			className="search"
+			id="outlined-basic"
+			label="Name, Coach, Category..."
+			variant="outlined"
+			onChange={(event) => {
+				setQuery({ ...query, offset: 0, search: event.target.value });
+			}}
+			InputProps={{
+				startAdornment: (
+					<InputAdornment position="start">
+						<SearchIcon />
+					</InputAdornment>
+				),
 			}}
 		/>
 	);
@@ -156,9 +166,10 @@ const StudioSchedule = () => {
 
 	return (
 		<>
-			<h1>Class Schedule</h1>
-			<Search query={query} setQuery={setQuery} />
+			<h1 className="schedule-title">Class Schedule</h1>
+			<SearchStack query={query} setQuery={setQuery} />
 			<ScheduleTable
+				className="schedule-table"
 				classes={classes}
 				isUser={false}
 				isHitory={true}

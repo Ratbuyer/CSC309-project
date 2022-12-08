@@ -1,19 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import ScheduleTable from '../ScheduleTable';
-import Pagination from '@mui/material/Pagination';
+import ScheduleTable from '../ScheduleTable/ScheduleTable';
 import { useNavigate } from 'react-router-dom';
-
-const SchedulePagination = ({ lastpage, setOffset }) => {
-	return (
-		<Pagination
-			count={lastpage}
-			defaultPage={1}
-			onChange={(event, value) => {
-				setOffset((value - 1) * 10);
-			}}
-		/>
-	);
-};
+import SchedulePagination from '../Pagination/Pagination';
 
 const UserClassHistory = () => {
 	const [classes, setClasses] = useState([]);
@@ -43,7 +31,7 @@ const UserClassHistory = () => {
 
 	return (
 		<>
-			<h1>My Class History</h1>
+			<h1 className="schedule-title">My Class History</h1>
 			{classes.length === 0 ? <h2>You have no history</h2> : null}
 
 			<ScheduleTable classes={classes} isUser={true} isHitory={true} />

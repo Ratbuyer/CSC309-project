@@ -12,7 +12,7 @@ import DropDialog from '../Drop/DropDialog';
 import SessionDialog from './SessionDialog';
 import ActionSnackbar from './ActionSnackbar';
 
-import './style.css';
+import './ScheduleTable.css';
 
 const ClassButton = ({
 	row,
@@ -71,7 +71,7 @@ function ScheduleTable({ classes, isUser, isHitory, reload, setReload }) {
 	return (
 		<>
 			<TableContainer component={Paper}>
-				<Table sx={{ minWidth: 650 }} aria-label="simple table">
+				<Table sx={{ minWidth: 500 }} aria-label="simple table">
 					<TableHead>
 						<TableRow>
 							<TableCell align="center">Name</TableCell>
@@ -92,7 +92,9 @@ function ScheduleTable({ classes, isUser, isHitory, reload, setReload }) {
 									setSession(row);
 								}}
 							>
-								<TableCell align="center">{row.classInfo.name}</TableCell>
+								<TableCell className="schedule-name" align="center">
+									{row.classInfo.name}
+								</TableCell>
 								<TableCell align="center">{row.classInfo.coach}</TableCell>
 								<TableCell align="center">
 									{KeywordsToString(row.classInfo.keywords)}

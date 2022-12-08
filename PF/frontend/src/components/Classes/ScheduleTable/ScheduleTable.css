@@ -1,0 +1,13 @@
+.MuiTableRow-hover {
+        cursor: pointer;
+}
+
+.MuiTableHead-root{
+        background-color: #e0e0e0;
+
+}
+
+.MuiTableCell-head{
+        font-weight: bold !important;
+}
+

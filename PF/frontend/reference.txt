@@ -1,3 +1,2 @@
-Some components under Account, Payment, and Subscription
-are modified from components provided by "Material UI"
+Some components are modified from components provided by "Material UI"
 url: 'https://mui.com/material-ui/'

@@ -14,205 +14,216 @@ import { Navigate } from 'react-router-dom';
 const theme = createTheme();
 
 export default function Register() {
-    
-    const [login, setLogin] = useState(false)
 
-    const [isusernameError, setIsusernameError] = useState(false)
-    const [usernameError, setUsernameError] = useState('')
+   const [login, setLogin] = useState(false)
 
-    const [ispasswordError, setIspasswordError] = useState(false)
-    const [passwordError, setPasswordError] = useState('')
+   const [isusernameError, setIsusernameError] = useState(false)
+   const [usernameError, setUsernameError] = useState('')
 
-    const [ispassword2Error, setIspassword2Error] = useState(false)
-    const [password2Error, setPassword2Error] = useState('')
+   const [ispasswordError, setIspasswordError] = useState(false)
+   const [passwordError, setPasswordError] = useState('')
 
-    const [isemailError, setIsemailError] = useState(false)
-    const [emailError, setEmailError] = useState('')
+   const [ispassword2Error, setIspassword2Error] = useState(false)
+   const [password2Error, setPassword2Error] = useState('')
 
-    const [isphoneError, setIsphoneError] = useState(false)
-    const [phoneError, setPhoneError] = useState('')
+   const [isemailError, setIsemailError] = useState(false)
+   const [emailError, setEmailError] = useState('')
 
-    const[isavatarError, setIsavatarError] = useState(false)
-    const[avatarError, setAvatarError] = useState(false)
+   const [isphoneError, setIsphoneError] = useState(false)
+   const [phoneError, setPhoneError] = useState('')
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        fetch('http://localhost:8000/accounts/register/', {
-            method: 'POST', body: data
-        })
-        .then(response => {
+   const [isavatarError, setIsavatarError] = useState(false)
+   const [avatarError, setAvatarError] = useState(false)
+
+   const handleSubmit = (event) => {
+      event.preventDefault();
+      const data = new FormData(event.currentTarget);
+      fetch('http://localhost:8000/accounts/register/', {
+         method: 'POST', body: data
+      })
+         .then(response => {
             if (response.status !== 200) {
-                return response.json()
+               return response.json()
             } else {
-                setLogin(true)
+               setLogin(true)
             }
-        })
-        .then(json => {
+         })
+         .then(json => {
             if (json.username) {
-                setUsernameError(json.username)
-                setIsusernameError(true)
+               setUsernameError(json.username)
+               setIsusernameError(true)
             } else setIsusernameError(false)
 
             if (json.password) {
-                setIspasswordError(true)
-                setPasswordError(json.password)
-            }   else setIspasswordError(false)
-            
+               setIspasswordError(true)
+               setPasswordError(json.password)
+            } else setIspasswordError(false)
+
             if (json.password2 || json.passwords) {
-                setIspassword2Error(true)
-                if (json.password2) {
-                    setPassword2Error(json.password2)
-                } else if (json.passwords) {
-                    setPassword2Error(json.passwords)
-                }
+               setIspassword2Error(true)
+               if (json.password2) {
+                  setPassword2Error(json.password2)
+               } else if (json.passwords) {
+                  setPassword2Error(json.passwords)
+               }
             } else setIspassword2Error(false)
 
             if (json.email) {
-                setIsemailError(true)
-                setEmailError(json.email)
+               setIsemailError(true)
+               setEmailError(json.email)
             } else setIsemailError(false)
 
             if (json.phone) {
-                setIsphoneError(true)
-                setPhoneError(json.phone)
+               setIsphoneError(true)
+               setPhoneError(json.phone)
             } else setIsphoneError(false)
 
             if (json.avatar) {
-                setIsavatarError(true)
-                setAvatarError(json.avatar)
+               setIsavatarError(true)
+               setAvatarError(json.avatar)
             } else {
-                setIsavatarError(false)
-                setAvatarError('')
+               setIsavatarError(false)
+               setAvatarError('')
             }
-        })
-        .catch(() => {})
-    };
+         })
+         .catch(() => { })
+   };
 
-    if (login) return <Navigate to='/login' />
+   const handlePhone = (event) => {
+      if (isNaN(event.target.value) || event.target.value.length !== 10) {
+         setIsphoneError(true)
+         setPhoneError('phone number is invalid')
+         return
+      }
+      setIsphoneError(false)
+      setPhoneError('')
+   }
 
-    return (
-        <ThemeProvider theme={theme}>
-            <Container component="main" maxWidth="xs">
-                <CssBaseline />
+   if (login) return <Navigate to='/login' />
 
-                <Box
-                    sx={{
-                        marginTop: 8,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                    }}
-                >
-                    
-                    <Typography component="h1" variant="h5">
-                        Register
-                    </Typography>
+   return (
+      <ThemeProvider theme={theme}>
+         <Container component="main" maxWidth="xs">
+            <CssBaseline />
 
-                    <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
-                        <TextField
-                            error = {isusernameError}
-                            helperText = {usernameError}
-                            size = 'small'
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="username"
-                            label="username"
-                            name="username"
-                        />
+            <Box
+               sx={{
+                  marginTop: 8,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+               }}
+            >
 
-                        <TextField
-                            error = {ispasswordError}
-                            helperText = {passwordError}
-                            size = 'small'
-                            margin="normal"
-                            required
-                            fullWidth
-                            name="password"
-                            label="password"
-                            type="password"
-                            id="password"
-                        />
+               <Typography component="h1" variant="h5">
+                  Register
+               </Typography>
 
-                        <TextField
-                            error = {ispassword2Error}
-                            helperText = {password2Error}
-                            size = 'small'
-                            margin="normal"
-                            required
-                            fullWidth
-                            name="password2"
-                            label="repeat password"
-                            type="password"
-                            id="password2"
-                        />
+               <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
+                  <TextField
+                     error={isusernameError}
+                     helperText={usernameError}
+                     size='small'
+                     margin="normal"
+                     required
+                     fullWidth
+                     id="username"
+                     label="username"
+                     name="username"
+                  />
 
-                        <TextField
-                            error = {isemailError}
-                            helperText = {emailError}
-                            size = 'small'
-                            margin="normal"
-                            fullWidth
-                            name="email"
-                            label="email"
-                            type="email"
-                            id="email"
-                        />
+                  <TextField
+                     error={ispasswordError}
+                     helperText={passwordError}
+                     size='small'
+                     margin="normal"
+                     required
+                     fullWidth
+                     name="password"
+                     label="password"
+                     type="password"
+                     id="password"
+                  />
 
-                        <TextField
-                            size = 'small'
-                            margin="normal"
-                            fullWidth
-                            id="first_name"
-                            label="first name"
-                            name="first_name"
-                        />
+                  <TextField
+                     error={ispassword2Error}
+                     helperText={password2Error}
+                     size='small'
+                     margin="normal"
+                     required
+                     fullWidth
+                     name="password2"
+                     label="repeat password"
+                     type="password"
+                     id="password2"
+                  />
 
-                        <TextField
-                            size = 'small'
-                            margin="normal"
-                            fullWidth
-                            id="last_name"
-                            label="last name"
-                            name="last_name"
-                        />
-                        
-                        <TextField
-                            error = {isphoneError}
-                            helperText = {phoneError}
-                            size = 'small'
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="phone"
-                            label="phone number - exactly 10 integers"
-                            name="phone"
-                        />
-                    
-                        {isavatarError ? <div style={{ color: 'red', margin: 10}}> {avatarError} </div> : null}
+                  <TextField
+                     error={isemailError}
+                     helperText={emailError}
+                     size='small'
+                     margin="normal"
+                     fullWidth
+                     name="email"
+                     label="email"
+                     type="email"
+                     id="email"
+                  />
 
-                        <label>Avatar</label>
-                        <input required accept="image/*" type="file" name='avatar' id='avatar'/>
+                  <TextField
+                     size='small'
+                     margin="normal"
+                     fullWidth
+                     id="first_name"
+                     label="first name"
+                     name="first_name"
+                  />
 
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            sx={{ mt: 3, mb: 2 }}
-                        >
-                            Submit
-                        </Button>
-                        <Grid container>
-                            <Grid item>
-                                <Link href="/login" variant="body2">
-                                    {"Already have account? Login here"}
-                                </Link>
-                            </Grid>
-                        </Grid>
-                    </Box>
-                </Box>
-            </Container>
-        </ThemeProvider>
-    );
+                  <TextField
+                     size='small'
+                     margin="normal"
+                     fullWidth
+                     id="last_name"
+                     label="last name"
+                     name="last_name"
+                  />
+
+                  <TextField
+                     error={isphoneError}
+                     helperText={phoneError}
+                     size='small'
+                     margin="normal"
+                     required
+                     fullWidth
+                     id="phone"
+                     label="phone number - exactly 10 integers"
+                     name="phone"
+                     onChange={handlePhone}
+                  />
+
+                  {isavatarError ? <div style={{ color: 'red', margin: 10 }}> {avatarError} </div> : null}
+
+                  <label>Avatar</label>
+                  <input required accept="image/*" type="file" name='avatar' id='avatar' />
+
+                  <Button
+                     type="submit"
+                     fullWidth
+                     variant="contained"
+                     sx={{ mt: 3, mb: 2 }}
+                  >
+                     Submit
+                  </Button>
+                  <Grid container>
+                     <Grid item>
+                        <Link href="/login" variant="body2">
+                           {"Already have account? Login here"}
+                        </Link>
+                     </Grid>
+                  </Grid>
+               </Box>
+            </Box>
+         </Container>
+      </ThemeProvider>
+   );
 }

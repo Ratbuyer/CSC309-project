@@ -30,7 +30,7 @@ const MainPage = () => {
          .then(data => setCount(data.count))
    }, [])
 
-   if (!count) return <h1>Loading ...</h1>
+   if (!count) return <center><h1>Loading ...</h1></center>
 
    return (
       <>

@@ -13,24 +13,28 @@ import UserClassHistory from './components/Classes/UserClassHistory';
 import Add from './components/Subscription/Add';
 import Edit from './components/Subscription/Edit';
 import History from './components/Payment/History';
+import { Navigate } from 'react-router-dom';
 
 const MainPage = () => {
-    return <>
-        <center>
-            <h1>Welcome</h1>
-            <span>Our company provides</span>
-        </center>
+	return (
+		<>
+			<center>
+				<h1>Welcome</h1>
+				<span>Our company provides</span>
+			</center>
 
-        <div style={{
-            height: '1200px',
-            backgroundImage: 'url(' + process.env.PUBLIC_URL + 'gym.jpeg' + ')',
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'top',
-            backgroundSize: '1440px',
-            margin: '10px',
-        }}>
-        </div>
-    </>
+			<div
+				style={{
+					height: '1200px',
+					backgroundImage: 'url(' + process.env.PUBLIC_URL + 'gym.jpeg' + ')',
+					backgroundRepeat: 'no-repeat',
+					backgroundPosition: 'top',
+					backgroundSize: '1440px',
+					margin: '10px',
+				}}
+			></div>
+		</>
+	);
 };
 
 function App() {
@@ -49,6 +53,7 @@ function App() {
 			<Route path="/subscription/add" element={<Add />}></Route>
 			<Route path="/subscription/edit" element={<Edit />}></Route>
 			<Route path="/payment/history" element={<History />}></Route>
+			<Route path="*" element={<Navigate to="/" />} />
 		</Routes>
 	);
 

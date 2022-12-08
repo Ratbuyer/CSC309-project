@@ -26,7 +26,7 @@ const theme = createTheme();
 
 export default function Album() {
 
- 
+    let info;
     
     const {isLoaded} = useLoadScript({googleMapsApiKey: "AIzaSyA7SCCkx8BeyK13Jo-NDiGPkCDqxjpGt14"});
 
@@ -46,7 +46,7 @@ export default function Album() {
     const [latitude, setLatitude] = useState(0);
     const [studios, setStudios] = useState();
     const [whetherGetLocation, setWhetherGetLocation] = useState(false);
-
+    //const [info, setInfo] = useState();
     
   
     getLocation();
@@ -56,7 +56,7 @@ export default function Album() {
     }, [longitude, latitude, whetherGetLocation])
     
     useEffect(() => {
-         fetch(`http://127.0.0.1:8000/studios/all/?search=${query.search}&class_name=${query.class_name}&class_coach=${query.class_coach}&amenity_type=${query.amenity_type}&longitude=${longitude}&latitude=${latitude}&name=${query.name}&offset=${query.page * 10}`)
+         fetch(`http://127.0.0.1:8000/studios/all/?search=${query.search}&class_name=${query.class_name}&class_coach=${query.class_coach}&amenity_type=${query.amenity_type}&longitude=${longitude}&latitude=${latitude}&name=${query.name}&offset=${query.page * 9}&limit=9`)
         .then(res => res.json())
         .then(json => {setStudios(json.results)
           setTotalItem(json.count);
@@ -108,75 +108,17 @@ export default function Album() {
     }
 
   if (!studios) return <></>;
-  //if (!latitude || !longitude) return <></>;
+
 
 
   return (
     <>
-    <h1>Search</h1>
-    
-
-    <TextField
-				id="outlined-basic"
-				label="Studio, Amenity, Class, Coach"
-				variant="outlined"
-				onChange={(event) => {
-					
-            setQuery({...query, search: event.target.value, page: 0});
-				}}
-			/>
-
-    <h1>Filter</h1>
-      <TextField
-				id="outlined-basic"
-				label="Studio Name"
-				variant="outlined"
-				onChange={(event) => {
-					setQuery({...query, name: event.target.value, page: 0});
-           
-				}}
-			/>
-    
-    <TextField
-				id="outlined-basic"
-				label="Class Name"
-				variant="outlined"
-				onChange={(event) => {
-					setQuery({...query, class_name: event.target.value, page: 0});
-           
-				}}
-			/>
-
-    <TextField
-				id="outlined-basic"
-				label="Class Coach"
-				variant="outlined"
-				onChange={(event) => {
-					setQuery({...query, class_coach: event.target.value, page: 0});
-           
-				}}
-			/>
-
-    <TextField
-				id="outlined-basic"
-				label="Amenity Type"
-				variant="outlined"
-				onChange={(event) => {
-					setQuery({...query, amenity_type: event.target.value, page: 0});
-           
-				}}
-			/>
-    
-    
 
     <ThemeProvider theme={theme}> 
     
       <CssBaseline />
       
       <main>
-        
-
-        
 
         {/* Hero unit */}
         <Box
@@ -229,9 +171,21 @@ export default function Album() {
             </GoogleMap>  
         }  
         
-          
+              <div className="searching">
+                  <h1 id='search'>Search</h1><br />
 
-          
+                  <TextField
+                      id="outlined-basic"
+                      label="Studio, Amenity, Class, Coach"
+                      variant="outlined"
+                      onChange={(event) => {
+                        
+                          setQuery({...query, search: event.target.value, page: 0});
+                      }}
+                    />
+
+            </div>
+
 
           <Grid container spacing={4}>
    
@@ -242,15 +196,25 @@ export default function Album() {
                 <Card
                   sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
                 >
-                  <CardMedia
-                    component="img"
-                    sx={{
-                      // 16:9
-                      pt: '56.25%',
-                    }}
-                    image="https://source.unsplash.com/random"
-                    alt="random"
-                  />
+                  { 
+                  fetch(`http://127.0.0.1:8000/studios/${studio.id}/details`)
+                    .then((res) => res.json())
+                    .then((json) => {
+                      info = json;
+                    })
+                  }
+                  
+                  {info &&
+                  info.images !== [] &&
+                        <CardMedia
+                        component="img"
+                        sx={{
+                          // 16:9
+                          pt: '16.25%',
+                        }}
+                        image={info.images[0]}
+                        alt="random"
+                  />}
                   <CardContent sx={{ flexGrow: 1 }}>
                     <Typography gutterBottom variant="h5" component="h2">
                       {studio.name}
@@ -258,7 +222,7 @@ export default function Album() {
                     <Typography>
                       
                       Address: {studio.address} <br/>
-                      Distance from you (km): {Math.round(studio.distance * 100) / 100}
+                      Distance from you (km): {Math.round(studio.distance * 10) / 10}
                     </Typography>
                   </CardContent>
                   <CardActions>
@@ -273,14 +237,18 @@ export default function Album() {
         </Container>
       </main>
       
-      {query.page > 0 ? <Button variant="contained" onClick={() => setQuery({...query, page: query.page - 1})}>
+      <div id='page'>
+        {query.page > 0 ? 
+        <Button variant="contained" onClick={() => setQuery({...query, page: query.page - 1})}>
 					Prev
-			</Button> : <></>}
-      
-      {query.page < Math.ceil(totalItem / 10) - 1 ? <Button variant="contained" onClick={() => setQuery({...query, page: query.page + 1})}>
-					Next
-			</Button> : <></>}
+			  </Button> : <></> 
+        }
 
+        {query.page < Math.ceil(totalItem / 9) - 1 ? <Button variant="contained" onClick={() => setQuery({...query, page: query.page + 1})}>
+					Next
+			  </Button> : <></>}
+      </div>
+      
     </ThemeProvider>
     
     </>

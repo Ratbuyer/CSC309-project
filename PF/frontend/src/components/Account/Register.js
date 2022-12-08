@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Navigate } from 'react-router-dom';
 
 const theme = createTheme();
@@ -34,6 +34,9 @@ export default function Register() {
 
    const [isavatarError, setIsavatarError] = useState(false)
    const [avatarError, setAvatarError] = useState(false)
+
+   const [password, setPassword] = useState('')
+   const [password2, setPassword2] = useState('')
 
    const handleSubmit = (event) => {
       event.preventDefault();
@@ -99,6 +102,26 @@ export default function Register() {
       setPhoneError('')
    }
 
+
+   const updatePassword = (event) => {setPassword(event.target.value)}
+
+
+   const updatePassword2 = (event) => {setPassword2(event.target.value)}
+
+   
+   useEffect(() => {
+      if (password !== password2) {
+         setIspassword2Error(true)
+         setPassword2Error('passwords do not match')
+         return
+      }
+
+      setIspassword2Error(false)
+      setPassword2Error('')
+
+   }, [password, password2])
+
+
    if (login) return <Navigate to='/login' />
 
    return (
@@ -143,6 +166,7 @@ export default function Register() {
                      label="password"
                      type="password"
                      id="password"
+                     onChange={updatePassword}
                   />
 
                   <TextField
@@ -156,6 +180,7 @@ export default function Register() {
                      label="repeat password"
                      type="password"
                      id="password2"
+                     onChange={updatePassword2}
                   />
 
                   <TextField

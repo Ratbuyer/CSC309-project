@@ -277,9 +277,7 @@ export default function Profile() {
 
     if (redirect) return <Navigate to='/login' />
 
-    if (!data) {
-        return
-    }
+    if (!data) return <h1>Loading ...</h1>
 
     return <>
         <Edit account={data} />

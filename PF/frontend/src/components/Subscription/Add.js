@@ -81,7 +81,7 @@ export default function Add() {
 
     if (!token) return <Navigate to='/login' />
     if (redirect) return <Navigate to='/subscription/edit' />
-    if (!plans) return <h1>Loading ...</h1>
+    if (!plans) return <center><h1>Loading ...</h1></center>
 
     return (
         <ThemeProvider theme={theme}>

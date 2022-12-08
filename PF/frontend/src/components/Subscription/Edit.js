@@ -132,9 +132,7 @@ export default function Edit() {
 
    if (!token) return <Navigate to='/login' />
    if (redirect) return <Navigate to='/subscription/add' />
-   if (!plans) return <h1>Loading ...</h1>
-   if (!current) return <h1>Loading ...</h1>
-   if (!schedule) return <h1>Loading ...</h1>
+   if (!plans || !current || !schedule) return <center><h1>Loading ...</h1></center>
 
    return (
       <ThemeProvider theme={theme}>

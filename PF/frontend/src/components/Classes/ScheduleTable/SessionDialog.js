@@ -8,7 +8,8 @@ import { KeywordsToString } from './ScheduleTable';
 import EnrollClass from '../Enroll/EnrollClass';
 import DropClass from '../Drop/DropClass';
 import { useNavigate } from 'react-router-dom';
-
+import Link from '@mui/material/Link';
+import PlaceIcon from '@mui/icons-material/Place';
 import './ScheduleTable.css';
 
 function ScheduleDialogAction({
@@ -17,6 +18,7 @@ function ScheduleDialogAction({
 	reload,
 	setReload,
 	setShowSnackbar,
+	setUserOffset,
 }) {
 	const navigate = useNavigate();
 
@@ -53,7 +55,8 @@ function ScheduleDialogAction({
 							reload,
 							setReload,
 							navigate,
-							setShowSnackbar
+							setShowSnackbar,
+							setUserOffset
 						);
 						handleClose();
 					}}
@@ -112,6 +115,7 @@ function SessionDialogAction({
 	reload,
 	setReload,
 	setShowSnackbar,
+	setUserOffset,
 }) {
 	if (isUser) {
 		return isHitory ? null : (
@@ -121,6 +125,7 @@ function SessionDialogAction({
 				reload={reload}
 				setReload={setReload}
 				setShowSnackbar={setShowSnackbar}
+				setUserOffset={setUserOffset}
 			/>
 		);
 	} else {
@@ -149,6 +154,19 @@ const styles = {
 	},
 };
 
+const GetStudioName = (studios, studioId) => {
+	const studio = studios.find((studio) => studio.id === studioId);
+	let linkto = studio ? '/studios/' + studioId + '/details' : '';
+	return studio ? (
+		<span>
+			<PlaceIcon />
+			<Link href={linkto}>{studio.name} </Link>
+		</span>
+	) : (
+		''
+	);
+};
+
 function SessionDialog({
 	session,
 	showDialog,
@@ -158,10 +176,13 @@ function SessionDialog({
 	reload,
 	setReload,
 	setShowSnackbar,
+	studios,
+	setUserOffset,
 }) {
 	const handleClose = () => {
 		setShowDialog(false);
 	};
+	console.log(session);
 
 	return (
 		<>
@@ -189,6 +210,9 @@ function SessionDialog({
 								' - ' +
 								session.end_time.slice(0, -3)}
 						</div>
+						<div className="schedule-dialog-studio">
+							{GetStudioName(studios, session.classInfo.studio)}
+						</div>
 						<div className="schedule-dialog-name">{session.classInfo.name}</div>
 						<div className="schedule-dialog-description">
 							{session.classInfo.description}
@@ -214,6 +238,7 @@ function SessionDialog({
 					reload={reload}
 					setReload={setReload}
 					setShowSnackbar={setShowSnackbar}
+					setUserOffset={setUserOffset}
 				/>
 				<DialogActions>
 					<Button

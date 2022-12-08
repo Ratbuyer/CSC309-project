@@ -11,6 +11,11 @@ import SchedulePagination from '../Pagination/Pagination';
 import SearchIcon from '@mui/icons-material/Search';
 import { InputAdornment } from '@mui/material';
 import Stack from '@mui/material/Stack';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel';
+import PlaceIcon from '@mui/icons-material/Place';
 
 import './StudioSchedule.css';
 
@@ -96,6 +101,33 @@ const Search = ({ query, setQuery }) => {
 	);
 };
 
+const ChangeStudio = ({ studios, query, setQuery }) => {
+	return (
+		<div id="studio-select">
+			<FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
+				<InputLabel>Studio</InputLabel>
+				<Select
+					value={query.studio}
+					onChange={(event) => {
+						setQuery({ ...query, offset: 0, studioID: event.target.value });
+						console.log(query.offset);
+					}}
+					label="Studio"
+					defaultValue={query.studioID}
+				>
+					{studios.map((studio) => {
+						return (
+							<MenuItem key={studio.id} value={studio.id}>
+								{studio.name}
+							</MenuItem>
+						);
+					})}
+				</Select>
+			</FormControl>
+		</div>
+	);
+};
+
 const StudioSchedule = () => {
 	const { studioID } = useParams();
 	const [classes, setClasses] = useState([]);
@@ -106,9 +138,11 @@ const StudioSchedule = () => {
 		end_date: null,
 		start_time: null,
 		end_time: null,
+		studioID: studioID,
 	});
 	const [totalItem, setTotalItem] = useState(1);
 	const [reload, setReload] = useState(false);
+	const [studios, setStudios] = useState([]);
 
 	let navigate = useNavigate();
 
@@ -143,9 +177,9 @@ const StudioSchedule = () => {
 				end_time_query = `${end_time.getHours()}:${end_time.getMinutes()}`;
 		}
 
-		const url = `http://127.0.0.1:8000/studios/${studioID}/classes?search=${
-			query.search
-		}&offset=${query.offset}${
+		const url = `http://127.0.0.1:8000/studios/${
+			query.studioID
+		}/classes?search=${query.search}&offset=${query.offset}${
 			start_date_query ? `&start_date=${start_date_query}` : ''
 		}${end_date_query ? `&end_date=${end_date_query}` : ''}${
 			start_time_query ? `&start_time=${start_time_query}` : ''
@@ -161,13 +195,23 @@ const StudioSchedule = () => {
 			.then((json) => {
 				setClasses(json.results);
 				setTotalItem(json.count);
+				console.log('fetching');
+				console.log(totalItem);
+			});
+
+		fetch(
+			`http://127.0.0.1:8000/studios/all/?longitude=${1}&latitude=${1}&offset=${0}&limit=${50}`
+		)
+			.then((res) => res.json())
+			.then((json) => {
+				setStudios(json.results);
 			});
 	}, [studioID, query, reload]);
 
 	return (
 		<>
 			<h1 className="schedule-title">Class Schedule</h1>
-
+			<ChangeStudio studios={studios} query={query} setQuery={setQuery} />
 			<SearchStack query={query} setQuery={setQuery} />
 			<ScheduleTable
 				className="schedule-table"
@@ -176,6 +220,7 @@ const StudioSchedule = () => {
 				isHitory={true}
 				reload={reload}
 				setReload={setReload}
+				studios={studios}
 			/>
 			<SchedulePagination
 				lastpage={Math.ceil(totalItem / 10)}

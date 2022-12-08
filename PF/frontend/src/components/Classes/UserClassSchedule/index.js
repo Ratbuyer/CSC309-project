@@ -8,6 +8,7 @@ const UserSchedule = () => {
 	const [offset, setOffset] = useState(0);
 	const [totalItem, setTotalItem] = useState(1);
 	const [reload, setReload] = useState(false);
+	const [studios, setStudios] = useState([]);
 
 	let token = localStorage.getItem('token');
 	let navigate = useNavigate();
@@ -27,24 +28,33 @@ const UserSchedule = () => {
 			.then((json) => {
 				setClasses(json.results);
 				setTotalItem(json.count);
+				console.log(classes);
+			});
+
+		fetch(
+			`http://127.0.0.1:8000/studios/all/?longitude=${1}&latitude=${1}&offset=${0}&limit=${50}`
+		)
+			.then((res) => res.json())
+			.then((json) => {
+				setStudios(json.results);
 			});
 	}, [offset, token, reload, navigate]);
 
 	return (
 		<>
 			<h1 className="schedule-title">My Class Schedule</h1>
-			{/* {classes.length === 0 ? (
-				<h2 className="no-class-messages">You have no enrolled classes</h2>
-			) : null} */}
 			<ScheduleTable
 				classes={classes}
 				isUser={true}
 				isHitory={false}
 				reload={reload}
 				setReload={setReload}
+				studios={studios}
+				setUserOffset={setOffset}
 			/>
 			<UserSchedulePagination
 				lastpage={Math.ceil(totalItem / 10)}
+				offset={offset}
 				setOffset={setOffset}
 			/>
 		</>

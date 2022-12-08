@@ -21,6 +21,7 @@ const ClassButton = ({
 	reload,
 	setReload,
 	setShowSnackbar,
+	setUserOffset,
 }) => {
 	if (isUser) {
 		return isHitory ? null : (
@@ -29,6 +30,7 @@ const ClassButton = ({
 				reload={reload}
 				setReload={setReload}
 				setShowSnackbar={setShowSnackbar}
+				setUserOffset={setUserOffset}
 			/>
 		);
 	} else {
@@ -48,18 +50,28 @@ const ClassButton = ({
 };
 
 export const KeywordsToString = (keywords) => {
-	let str = '';
+	let str = '<p>';
 	for (let i = 0; i < keywords.length; i++) {
 		str += keywords[i];
 		if (i !== keywords.length - 1) {
-			str += ' . ';
+			str += ` <strong>&#8226;</strong> `;
 		}
 	}
-	str += '';
-	return <>{str}</>;
+	str += '</p>';
+	return (
+		<div className="content" dangerouslySetInnerHTML={{ __html: str }}></div>
+	);
 };
 
-function ScheduleTable({ classes, isUser, isHitory, reload, setReload }) {
+function ScheduleTable({
+	classes,
+	isUser,
+	isHitory,
+	reload,
+	setReload,
+	studios,
+	setUserOffset,
+}) {
 	const [showDialog, setShowDialog] = useState(false);
 	const [session, setSession] = useState(null);
 	const [showSnackbar, setShowSnackbar] = useState({
@@ -73,7 +85,7 @@ function ScheduleTable({ classes, isUser, isHitory, reload, setReload }) {
 			<TableContainer component={Paper}>
 				<Table sx={{ minWidth: 500 }} aria-label="simple table">
 					<TableHead>
-						<TableRow>
+						<TableRow id="schedule-head-cell">
 							<TableCell align="center">Name</TableCell>
 							<TableCell align="center">Coach</TableCell>
 							<TableCell align="center">Category</TableCell>
@@ -92,15 +104,21 @@ function ScheduleTable({ classes, isUser, isHitory, reload, setReload }) {
 									setSession(row);
 								}}
 							>
-								<TableCell className="schedule-name" align="center">
+								<TableCell id="schedule-name" align="center">
 									{row.classInfo.name}
 								</TableCell>
 								<TableCell align="center">{row.classInfo.coach}</TableCell>
-								<TableCell align="center" style={{ width: 200 }}>
+								<TableCell
+									id="schedule-category-cell"
+									align="center"
+									style={{ width: 200 }}
+								>
 									{KeywordsToString(row.classInfo.keywords)}
 								</TableCell>
-								<TableCell align="center">{row.date}</TableCell>
-								<TableCell align="center">
+								<TableCell id="schedule-date-cell" align="center">
+									{row.date}
+								</TableCell>
+								<TableCell id="schedule-time" align="center">
 									{row.start_time.slice(0, -3) +
 										' - ' +
 										row.end_time.slice(0, -3)}
@@ -113,6 +131,7 @@ function ScheduleTable({ classes, isUser, isHitory, reload, setReload }) {
 										reload={reload}
 										setReload={setReload}
 										setShowSnackbar={setShowSnackbar}
+										setUserOffset={setUserOffset}
 									/>
 								</TableCell>
 							</TableRow>
@@ -130,6 +149,8 @@ function ScheduleTable({ classes, isUser, isHitory, reload, setReload }) {
 					reload={reload}
 					setReload={setReload}
 					setShowSnackbar={setShowSnackbar}
+					studios={studios}
+					setUserOffset={setUserOffset}
 				/>
 			)}
 			<ActionSnackbar

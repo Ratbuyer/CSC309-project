@@ -49,3 +49,40 @@
         font-size: 1rem;
         font-weight: bold;
 }
+
+#schedule-name {
+        font-size: 1rem;
+        font-weight: 700;
+        font-style: Roboto;
+}
+
+#schedule-time{
+        font-size: 1rem;
+        font-style: Roboto;
+        font-weight: bolder;
+        color: coral;
+}
+
+#schedule-head-cell th {
+        font-size: 1.2rem;
+        font-weight: bolder;
+}
+
+#schedule-category-cell {
+
+        font-style: Roboto;
+}
+
+#schedule-date-cell {
+        font-size: 1rem;
+        font-weight: 700;
+        font-style: Roboto;
+}
+
+.schedule-dialog-studio {
+        margin-top: 5px;
+        font-size: 1rem;
+        font-weight: 700;
+        font-style: Roboto;
+        color: #000;
+}

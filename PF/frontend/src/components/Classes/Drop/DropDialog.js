@@ -10,7 +10,13 @@ import { useNavigate } from 'react-router-dom';
 
 import './DropDialog.css';
 
-function DropDialog({ session, reload, setReload, setShowSnackbar }) {
+function DropDialog({
+	session,
+	reload,
+	setReload,
+	setShowSnackbar,
+	setUserOffset,
+}) {
 	const [open, setOpen] = React.useState(false);
 
 	const handleClickOpen = () => {
@@ -50,7 +56,8 @@ function DropDialog({ session, reload, setReload, setShowSnackbar }) {
 								reload,
 								setReload,
 								navigate,
-								setShowSnackbar
+								setShowSnackbar,
+								setUserOffset
 							);
 							handleClose();
 						}}

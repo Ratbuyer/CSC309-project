@@ -190,7 +190,7 @@ export default function Register() {
                             name="phone"
                         />
                     
-                        <div style={{ color: 'red', margin: 10}}> {avatarError} </div>
+                        {isavatarError ? <div style={{ color: 'red', margin: 10}}> {avatarError} </div> : null}
 
                         <label>Avatar</label>
                         <input required accept="image/*" type="file" name='avatar' id='avatar'/>

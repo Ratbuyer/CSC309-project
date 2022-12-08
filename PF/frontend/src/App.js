@@ -15,7 +15,22 @@ import Edit from './components/Subscription/Edit';
 import History from './components/Payment/History';
 
 const MainPage = () => {
-	return <h2 style={{ textAlign: 'centre' }}>Main Page</h2>;
+    return <>
+        <center>
+            <h1>Welcome</h1>
+            <span>Our company provides</span>
+        </center>
+
+        <div style={{
+            height: '1200px',
+            backgroundImage: 'url(' + process.env.PUBLIC_URL + 'gym.jpeg' + ')',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'top',
+            backgroundSize: '1440px',
+            margin: '10px',
+        }}>
+        </div>
+    </>
 };
 
 function App() {

@@ -32,9 +32,9 @@ const UserClassHistory = () => {
 	return (
 		<>
 			<h1 className="schedule-title">My Class History</h1>
-			{classes.length === 0 ? (
+			{/* {classes.length === 0 ? (
 				<h2 className="no-class-messages">You don't have history</h2>
-			) : null}
+			) : null} */}
 
 			<ScheduleTable classes={classes} isUser={true} isHitory={true} />
 			<UserSchedulePagination

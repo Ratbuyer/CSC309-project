@@ -20,6 +20,19 @@ table, th {
     width: 50%;
   }
 
+.amentity {
+  text-align: center;
+
+}
+
 .direction {
   text-align: center;
+}
+
+.images {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+ 
 }

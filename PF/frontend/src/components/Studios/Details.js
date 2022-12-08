@@ -174,13 +174,13 @@ https://www.google.com/maps/dir/?api=1&origin=${latitude},${longitude}&destinati
 							<tr>
 								<th id="title">Amenities</th>
 							</tr>
-							<tr>
+							<tr className='amenity'>
 								<th>Type</th>
 								<th>Quantity</th>
 							</tr>
 						</thead>
 
-						<tbody>
+						<tbody className='amenity'>
 							{info &&
 								info.amenities.map((x, index) => (
 									<tr key={index}>
@@ -190,16 +190,18 @@ https://www.google.com/maps/dir/?api=1&origin=${latitude},${longitude}&destinati
 								))}
 						</tbody>
 					</table>
-					<ImageList sx={{ width: 500, height: 450 }} cols={3} rowHeight={164}>
-					{info &&
-						info.images !== [] &&
-						info.images.map((x, index) => (
-							<ImageListItem key={index}>
-								<img key={index} class="center" src={x} alt="" width="500" height="600" />
-							</ImageListItem>
-							
-						))}
-					</ImageList>	
+					<div className="images">
+						<ImageList sx={{ width: 500, height: 450 }} cols={3} rowHeight={164}>
+						{info &&
+							info.images !== [] &&
+							info.images.map((x, index) => (
+								<ImageListItem key={index}>
+									<img key={index} class="center" src={x} alt="" width="500" height="600" />
+								</ImageListItem>
+								
+							))}
+						</ImageList>	
+					</div>
 				</Container>
 			</main>
 

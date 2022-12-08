@@ -5,9 +5,44 @@
 }
 
 .map-container {
-    width: 100%;
-    height: 100vh;
- 
-   
 
+    margin-left: -200px;
+    align-items: center;
+    justify-content: center;
+    width: 150%;
+    height: 60vh;
+}
+
+.search-bar {
+
+    padding-top: 100px;
+    padding-bottom: 100px;
+}
+
+
+#search {
+    font-size: 40px;
+    font-weight: bold;
+    margin-right: 50px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+#filter {
+    font-size: 40px;
+    font-weight: bold;
+    margin-right: 50px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.filter-bar {
+
+    padding-bottom: 100px;
+}
+
+#page {
+    text-align: center;
+    align-items: center;
+    justify-content: center;
 }

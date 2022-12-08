@@ -56,7 +56,7 @@ export default function Album() {
     }, [longitude, latitude, whetherGetLocation])
     
     useEffect(() => {
-         fetch(`http://127.0.0.1:8000/studios/all/?search=${query.search}&class_name=${query.class_name}&class_coach=${query.class_coach}&amenity_type=${query.amenity_type}&longitude=${longitude}&latitude=${latitude}&name=${query.name}&offset=${query.page * 10}`)
+         fetch(`http://127.0.0.1:8000/studios/all/?search=${query.search}&class_name=${query.class_name}&class_coach=${query.class_coach}&amenity_type=${query.amenity_type}&longitude=${longitude}&latitude=${latitude}&name=${query.name}&offset=${query.page * 9}&limit=9`)
         .then(res => res.json())
         .then(json => {setStudios(json.results)
           setTotalItem(json.count);
@@ -113,59 +113,10 @@ export default function Album() {
 
   return (
     <>
-    <h1>Search</h1>
+   
     
-
-    <TextField
-				id="outlined-basic"
-				label="Studio, Amenity, Class, Coach"
-				variant="outlined"
-				onChange={(event) => {
-					
-            setQuery({...query, search: event.target.value, page: 0});
-				}}
-			/>
-
-    <h1>Filter</h1>
-      <TextField
-				id="outlined-basic"
-				label="Studio Name"
-				variant="outlined"
-				onChange={(event) => {
-					setQuery({...query, name: event.target.value, page: 0});
-           
-				}}
-			/>
     
-    <TextField
-				id="outlined-basic"
-				label="Class Name"
-				variant="outlined"
-				onChange={(event) => {
-					setQuery({...query, class_name: event.target.value, page: 0});
-           
-				}}
-			/>
-
-    <TextField
-				id="outlined-basic"
-				label="Class Coach"
-				variant="outlined"
-				onChange={(event) => {
-					setQuery({...query, class_coach: event.target.value, page: 0});
-           
-				}}
-			/>
-
-    <TextField
-				id="outlined-basic"
-				label="Amenity Type"
-				variant="outlined"
-				onChange={(event) => {
-					setQuery({...query, amenity_type: event.target.value, page: 0});
-           
-				}}
-			/>
+    
     
     
 
@@ -229,9 +180,21 @@ export default function Album() {
             </GoogleMap>  
         }  
         
-          
+              <div className="search-bar">
+                  <h1 id='search'>Search</h1><br />
 
-          
+                  <TextField
+                      id="outlined-basic"
+                      label="Studio, Amenity, Class, Coach"
+                      variant="outlined"
+                      onChange={(event) => {
+                        
+                          setQuery({...query, search: event.target.value, page: 0});
+                      }}
+                    />
+
+            </div>
+
 
           <Grid container spacing={4}>
    
@@ -273,14 +236,18 @@ export default function Album() {
         </Container>
       </main>
       
-      {query.page > 0 ? <Button variant="contained" onClick={() => setQuery({...query, page: query.page - 1})}>
+      <div id='page'>
+        {query.page > 0 ? 
+        <Button variant="contained" onClick={() => setQuery({...query, page: query.page - 1})}>
 					Prev
-			</Button> : <></>}
-      
-      {query.page < Math.ceil(totalItem / 10) - 1 ? <Button variant="contained" onClick={() => setQuery({...query, page: query.page + 1})}>
-					Next
-			</Button> : <></>}
+			  </Button> : <></> 
+        }
 
+        {query.page < Math.ceil(totalItem / 9) - 1 ? <Button variant="contained" onClick={() => setQuery({...query, page: query.page + 1})}>
+					Next
+			  </Button> : <></>}
+      </div>
+      
     </ThemeProvider>
     
     </>

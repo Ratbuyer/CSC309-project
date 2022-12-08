@@ -162,7 +162,7 @@ https://www.google.com/maps/dir/?api=1&origin=${latitude},${longitude}&destinati
 										<td>{info.address}</td>
 										<td>{info['postal code']}</td>
 										<td>{info['phone number']}</td>
-										<td>{Math.round(info['distance (km)'])}</td>
+										<td>{Math.round(info['distance (km)'] * 100) / 100}</td>
 									</tr>
 								</>
 							)}

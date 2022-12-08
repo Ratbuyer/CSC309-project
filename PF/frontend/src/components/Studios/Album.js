@@ -25,6 +25,8 @@ const theme = createTheme();
 
 
 export default function Album() {
+
+ 
     
     const {isLoaded} = useLoadScript({googleMapsApiKey: "AIzaSyA7SCCkx8BeyK13Jo-NDiGPkCDqxjpGt14"});
 
@@ -37,14 +39,21 @@ export default function Album() {
       name: ''
     });
 
- 
+
+
     const [totalItem, setTotalItem] = useState(1);
     const [longitude, setLongitude] = useState(0);
     const [latitude, setLatitude] = useState(0);
     const [studios, setStudios] = useState();
+    const [whetherGetLocation, setWhetherGetLocation] = useState(false);
 
+    
   
     getLocation();
+
+    useEffect(() => {
+      getLocation();
+    }, [longitude, latitude, whetherGetLocation])
     
     useEffect(() => {
          fetch(`http://127.0.0.1:8000/studios/all/?search=${query.search}&class_name=${query.class_name}&class_coach=${query.class_coach}&amenity_type=${query.amenity_type}&longitude=${longitude}&latitude=${latitude}&name=${query.name}&offset=${query.page * 10}`)
@@ -54,7 +63,7 @@ export default function Album() {
         })
       
         
-    }, [longitude, latitude, query])
+    }, [longitude, latitude, query, whetherGetLocation])
 
 
     var x = document.getElementById("demo");
@@ -73,7 +82,8 @@ export default function Album() {
       if (x) {
         setLatitude(position.coords.latitude);
         setLongitude(position.coords.longitude);
-        
+        setWhetherGetLocation(true);
+       
         x.innerHTML = "Your location:" + "<br>Latitude: " + position.coords.latitude +
       "<br>Longitude: " + position.coords.longitude;
       }
@@ -97,7 +107,9 @@ export default function Album() {
       }
     }
 
-  if (!studios) return;
+  if (!studios) return <></>;
+  //if (!latitude || !longitude) return <></>;
+
 
   return (
     <>
@@ -212,7 +224,7 @@ export default function Album() {
               
               {          
               studios.map((studio, index) => {
-               return <MarkerF key={index} position={{lat: studio.latitude, lng: studio.longitude}}></MarkerF>     
+               return <MarkerF key={index} position={{lat: studio.latitude, lng: studio.longitude}} label={studio.name} ></MarkerF>     
               })}
             </GoogleMap>  
         }  
@@ -223,7 +235,7 @@ export default function Album() {
 
           <Grid container spacing={4}>
    
-            {studios && studios.map((studio, index) => (
+            {isLoaded && studios && studios.map((studio, index) => (
               
               <Grid item key={index} xs={12} sm={6} md={4}>
 
@@ -246,7 +258,7 @@ export default function Album() {
                     <Typography>
                       
                       Address: {studio.address} <br/>
-                      Distance from you: {Math.round(studio.distance)}
+                      Distance from you (km): {Math.round(studio.distance * 100) / 100}
                     </Typography>
                   </CardContent>
                   <CardActions>

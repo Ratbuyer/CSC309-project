@@ -33,9 +33,9 @@ const UserSchedule = () => {
 	return (
 		<>
 			<h1 className="schedule-title">My Class Schedule</h1>
-			{classes.length === 0 ? (
+			{/* {classes.length === 0 ? (
 				<h2 className="no-class-messages">You have no enrolled classes</h2>
-			) : null}
+			) : null} */}
 			<ScheduleTable
 				classes={classes}
 				isUser={true}

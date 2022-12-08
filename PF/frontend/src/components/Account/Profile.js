@@ -51,6 +51,7 @@ const Success = () => {
 
 const Edit = ({ account }) => {
 
+
     const [success, setSuccess] = useState(false)
 
     const [user, setUser] = useState(account)
@@ -150,6 +151,7 @@ const Edit = ({ account }) => {
                     }}
                 >
                     <h1> Welcome, {user.username}</h1>
+                    <span>Fill the form below to edit your profile</span>
 
                     <Avatar src={user.avatar}></Avatar>
 
@@ -225,7 +227,7 @@ const Edit = ({ account }) => {
                             defaultValue={user.phone}
                         />
 
-                        <div style={{ color: 'red', margin: 10 }}> {avatarError} </div>
+                        {isavatarError ? <div style={{ color: 'red', margin: 10 }}> {avatarError} </div> : null}
 
                         <label>Select new avatar</label>
                         <input accept="image/*" type="file" name='avatar' id='avatar' />

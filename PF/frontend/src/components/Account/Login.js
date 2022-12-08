@@ -44,7 +44,6 @@ export default function Login() {
     };
 
     if (profile) {
-        window.location.reload(false)
         return <Navigate to='/profile' />
     }
 

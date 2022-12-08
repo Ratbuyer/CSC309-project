@@ -17,28 +17,43 @@ import History from './components/Payment/History'
 
 
 const MainPage = () => {
-	return <h2 style={{ textAlign: 'centre' }}>Main Page</h2>;
+    return <>
+        <center>
+            <h1>Welcome</h1>
+            <span>Our company provides</span>
+        </center>
+
+        <div style={{
+            height: '1200px',
+            backgroundImage: 'url(' + process.env.PUBLIC_URL + 'gym.jpeg' + ')',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'top',
+            backgroundSize: '1440px',
+            margin: '10px',
+        }}>
+        </div>
+    </>
 };
 
 
 function App() {
-	let routes = (
-		<Routes>
-			<Route path="/" element={<MainPage />} exact="true"></Route>
-			<Route path="/studios" element={<Album />}></Route>
-			<Route path="/studios/:studioId/details" element={<Details />}></Route>
-			<Route path="/login" element={<Login />}></Route>
-			<Route path="/logout" element={<Logout />}></Route>
-			<Route path="/register" element={<Register />}></Route>
-			<Route path="/profile" element={<Profile />}></Route>
-			<Route path="/classes/:studioID" element={<Classes />} exact></Route>
-			<Route path="/class-schedule" element={<UserSchedule />} exact></Route>
-			<Route path="/class-history" element={<UserClassHistory />} exact></Route>
+    let routes = (
+        <Routes>
+            <Route path="/" element={<MainPage />} exact="true"></Route>
+            <Route path="/studios" element={<Album />}></Route>
+            <Route path="/studios/:studioId/details" element={<Details />}></Route>
+            <Route path="/login" element={<Login />}></Route>
+            <Route path="/logout" element={<Logout />}></Route>
+            <Route path="/register" element={<Register />}></Route>
+            <Route path="/profile" element={<Profile />}></Route>
+            <Route path="/classes/:studioID" element={<Classes />} exact></Route>
+            <Route path="/class-schedule" element={<UserSchedule />} exact></Route>
+            <Route path="/class-history" element={<UserClassHistory />} exact></Route>
             <Route path="/subscription/add" element={<Add />}></Route>
             <Route path="/subscription/edit" element={<Edit />}></Route>
             <Route path="/payment/history" element={<History />}></Route>
-		</Routes>
-	);
+        </Routes>
+    );
 
 
     return (<BrowserRouter>

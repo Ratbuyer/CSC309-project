@@ -59,7 +59,7 @@ export default function History() {
     }
 
     if (redirect || !token) return <Navigate to='/login' />
-    if (!data) return
+    if (!data) return <h1>Loading ...</h1>
 
     return (
         <>

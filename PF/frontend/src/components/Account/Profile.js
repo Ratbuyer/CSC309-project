@@ -241,8 +241,8 @@ const Edit = ({ account }) => {
 
                         <Grid container>
                             <Grid item>
-                                <Link href="/logout" variant="body2">
-                                    {"Click here to log out"}
+                                <Link href="/payment/history" variant="body2">
+                                    {"Click here to view payment history"}
                                 </Link>
                             </Grid>
                         </Grid>

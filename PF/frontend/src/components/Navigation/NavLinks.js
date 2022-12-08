@@ -86,23 +86,6 @@ function MyAccount() {
 
 const NavLinks = (props) => {
 	let token = localStorage.getItem('token');
-	const [login, setLogin] = useState(false);
-
-	useEffect(() => {
-		fetch('http://localhost:8000/accounts/profile/', {
-			method: 'GET',
-			headers: { Authorization: `Bearer ${token}` },
-		}).then(
-			(response) => {
-				if (response.status === 200) {
-					setLogin(true);
-				} else {
-					setLogin(false);
-				}
-			},
-			[token]
-		);
-	});
 
 	return (
 		<ul className="nav-links">
@@ -116,7 +99,7 @@ const NavLinks = (props) => {
 			<li>
 				<NavLink to="/subscription/edit">SUBSCRIPTION</NavLink>
 			</li>
-			<li>{login ? <MyAccount /> : <NavLink to="/login">LOGIN</NavLink>}</li>
+			<li>{token ? <MyAccount /> : <NavLink to="/login">LOGIN</NavLink>}</li>
 		</ul>
 	);
 };

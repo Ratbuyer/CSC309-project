@@ -89,13 +89,13 @@ const Edit = ({ account }) => {
 
    useEffect(() => {
       if (password !== password2 && password && password2) {
-         setIspassword2Error(true)
-         setPassword2Error('passwords do not match')
+         setIspasswordError(true)
+         setPasswordError('Passwords do not match')
          return
       }
 
-      setIspassword2Error(false)
-      setPassword2Error('')
+      setIspasswordError(false)
+      setPasswordError('')
 
    }, [password, password2])
 

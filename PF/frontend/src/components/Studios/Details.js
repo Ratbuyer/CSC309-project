@@ -15,7 +15,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import './Details.css';
 import { OpenInBrowser } from '@mui/icons-material';
 
-
+import { ImageListItem, ImageList } from '@mui/material';
 
 const theme = createTheme();
 
@@ -190,11 +190,16 @@ https://www.google.com/maps/dir/?api=1&origin=${latitude},${longitude}&destinati
 								))}
 						</tbody>
 					</table>
+					<ImageList sx={{ width: 500, height: 450 }} cols={3} rowHeight={164}>
 					{info &&
 						info.images !== [] &&
 						info.images.map((x, index) => (
-							<img key={index} class="center" src={x} alt="" width="500" height="600" />
+							<ImageListItem key={index}>
+								<img key={index} class="center" src={x} alt="" width="500" height="600" />
+							</ImageListItem>
+							
 						))}
+					</ImageList>	
 				</Container>
 			</main>
 

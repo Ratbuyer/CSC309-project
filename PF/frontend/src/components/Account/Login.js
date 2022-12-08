@@ -11,9 +11,16 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { useState } from 'react';
-import { Navigate } from 'react-router-dom';
 
-const theme = createTheme();
+import orange from '@mui/material/colors/orange'
+
+
+const theme = createTheme({
+   palette: {
+     primary: {main: '#ed6c02'}
+   },
+ });
+
 
 export default function Login() {
 	const [error, setError] = useState([]);
@@ -89,6 +96,7 @@ export default function Login() {
 							fullWidth
 							variant="contained"
 							sx={{ mt: 3, mb: 2 }}
+                     color='primary'
 						>
 							Submit
 						</Button>

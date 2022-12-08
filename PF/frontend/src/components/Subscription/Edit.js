@@ -19,31 +19,31 @@ import Select from '@mui/material/Select';
 
 const Success = () => {
 
-    const [open, setOpen] = React.useState(true);
+   const [open, setOpen] = React.useState(true);
 
-    return (
-        <Box sx={{ width: '100%' }}>
-            <Collapse in={open}>
-                <Alert
-                    action={
-                        <IconButton
-                            aria-label="close"
-                            color="inherit"
-                            size="small"
-                            onClick={() => {
-                                setOpen(false);
-                            }}
-                        >
-                            <CloseIcon fontSize="inherit" />
-                        </IconButton>
-                    }
-                    sx={{ mb: 2 }}
-                >
-                    your changes has been made
-                </Alert>
-            </Collapse>
-        </Box>
-    );
+   return (
+      <Box sx={{ width: '100%' }}>
+         <Collapse in={open}>
+            <Alert
+               action={
+                  <IconButton
+                     aria-label="close"
+                     color="inherit"
+                     size="small"
+                     onClick={() => {
+                        setOpen(false);
+                     }}
+                  >
+                     <CloseIcon fontSize="inherit" />
+                  </IconButton>
+               }
+               sx={{ mb: 2 }}
+            >
+               your changes has been made
+            </Alert>
+         </Collapse>
+      </Box>
+   );
 }
 
 const theme = createTheme();
@@ -51,157 +51,157 @@ const theme = createTheme();
 
 export default function Edit() {
 
-    const token = localStorage.getItem('token')
+   const token = localStorage.getItem('token')
 
-    const [plans, setPlans] = useState()
-    const [current, setCurrent] = useState()
-    const [select, setSelect] = useState(1)
-    const [redirect, setRedirect] = useState(false)
-    const [schedule, setSchedule] = useState()
-    const [success, setSuccess] = useState()
-
-
-    useEffect(() => {
-        fetch('http://localhost:8000/subscription/plans/', {
-            method: 'GET'
-        })
-            .then(response => response.json())
-            .then(json => {
-                setPlans(json.results)
-            })
-    }, [])
-
-    useEffect(() => {
-        fetch('http://localhost:8000/subscription/payment/future/', {
-            method: 'GET', headers: { 'Authorization': `Bearer ${token}` }
-        })
-            .then(response => response.json())
-            .then(json => {
-                setSchedule(json)
-            })
-    }, [current])
-
-    useEffect(() => {
-        fetch('http://localhost:8000/subscription/manage/', {
-            method: 'GET', headers: { 'Authorization': `Bearer ${token}` }
-        })
-            .then(response => {
-                if (response.status !== 200) setRedirect(true)
-                else return response.json()
-            })
-            .then(json => {
-                setCurrent(json)
-                setSelect(json.plan)
-            })
-    }, [])
+   const [plans, setPlans] = useState()
+   const [current, setCurrent] = useState()
+   const [select, setSelect] = useState(1)
+   const [redirect, setRedirect] = useState(false)
+   const [schedule, setSchedule] = useState()
+   const [success, setSuccess] = useState()
 
 
-    const handleSubmit = (event) => {
-        setSuccess(false)
-        event.preventDefault();
-        console.log(event.currentTarget)
-        const data = new FormData(event.currentTarget);
-        data.append('plan', select)
-        fetch('http://localhost:8000/subscription/manage/', {
-            method: 'PUT', body: data, headers: { 'Authorization': `Bearer ${token}` }
-        })
-            .then(response => {
-                setSuccess(true)
-                return response.json()
-            })
-            .then(json => setCurrent(json))
-    }
+   useEffect(() => {
+      fetch('http://localhost:8000/subscription/plans/', {
+         method: 'GET'
+      })
+         .then(response => response.json())
+         .then(json => {
+            setPlans(json.results)
+         })
+   }, [])
 
-    const handleSelect = (event) => {
-        setSelect(event.target.value)
-    }
+   useEffect(() => {
+      fetch('http://localhost:8000/subscription/payment/future/', {
+         method: 'GET', headers: { 'Authorization': `Bearer ${token}` }
+      })
+         .then(response => response.json())
+         .then(json => {
+            setSchedule(json)
+         })
+   }, [current])
 
-    const handleClick = () => {
-        const confirmBox = window.confirm(
-            "Do you really want to delete your subscription?"
-        )
+   useEffect(() => {
+      fetch('http://localhost:8000/subscription/manage/', {
+         method: 'GET', headers: { 'Authorization': `Bearer ${token}` }
+      })
+         .then(response => {
+            if (response.status !== 200) setRedirect(true)
+            else return response.json()
+         })
+         .then(json => {
+            setCurrent(json)
+            setSelect(json.plan)
+         })
+   }, [])
 
-        if (confirmBox) {
+
+   const handleSubmit = (event) => {
+      setSuccess(false)
+      event.preventDefault();
+      console.log(event.currentTarget)
+      const data = new FormData(event.currentTarget);
+      data.append('plan', select)
+      fetch('http://localhost:8000/subscription/manage/', {
+         method: 'PUT', body: data, headers: { 'Authorization': `Bearer ${token}` }
+      })
+         .then(response => {
             setSuccess(true)
-            fetch('http://localhost:8000/subscription/manage/', {
-                method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` }
-            })
-                .then(() => setRedirect(true))
-        } else return
-    }
+            return response.json()
+         })
+         .then(json => setCurrent(json))
+   }
 
-    if (!token) return <Navigate to='/login' />
-    if (redirect) return <Navigate to='/subscription/add' />
-    if (!plans) return <h1>Loading ...</h1>
-    if (!current) return <h1>Loading ...</h1>
-    if (!schedule) return <h1>Loading ...</h1>
+   const handleSelect = (event) => {
+      setSelect(event.target.value)
+   }
 
-    return (
-        <ThemeProvider theme={theme}>
-            <Container component="main" maxWidth="xs">
-                <CssBaseline />
-                <Box
-                    sx={{
-                        marginTop: 8,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                    }}
-                >
+   const handleClick = () => {
+      const confirmBox = window.confirm(
+         "Do you really want to delete your subscription?"
+      )
 
-                    <h2>Your subscription</h2>
-                    <h4 style={{ margin: 1 }}>Start date: {current.date}</h4>
-                    <h4 style={{ margin: 1 }}>Your card: {current.card}</h4>
-                    <h4 style={{ margin: 1 }}>Your Payment schedule: {schedule.future}</h4>
-                    <h4>Fill the form below to edit your subscription</h4>
+      if (confirmBox) {
+         setSuccess(true)
+         fetch('http://localhost:8000/subscription/manage/', {
+            method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` }
+         })
+            .then(() => setRedirect(true))
+      } else return
+   }
 
-                    <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
+   if (!token) return <Navigate to='/login' />
+   if (redirect) return <Navigate to='/subscription/add' />
+   if (!plans) return <h1>Loading ...</h1>
+   if (!current) return <h1>Loading ...</h1>
+   if (!schedule) return <h1>Loading ...</h1>
 
-                        <InputLabel id="label">Select Plan</InputLabel>
-                        <Select
-                            labelId="label"
-                            fullWidth
-                            value={select}
-                            onChange={handleSelect}
-                        >
+   return (
+      <ThemeProvider theme={theme}>
+         <Container component="main" maxWidth="xs">
+            <CssBaseline />
+            <Box
+               sx={{
+                  marginTop: 8,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+               }}
+            >
 
-                            {plans.map(plan => <MenuItem value={plan.id} key={plan.id}> {plan.amount}$ per {plan.duration}</MenuItem>)}
+               <h2>Your subscription</h2>
+               <h4 style={{ margin: 1 }}>Start date: {current.date}</h4>
+               <h4 style={{ margin: 1 }}>Your card: {current.card}</h4>
+               <h4 style={{ margin: 1 }}>Your Payment schedule: {schedule.future}</h4>
+               <h4>Fill the form below to edit your subscription</h4>
 
-                        </Select>
+               <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
 
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="card"
-                            label="card number"
-                            name="card"
-                            defaultValue={current.card}
-                        />
+                  <InputLabel id="label">Select Plan</InputLabel>
+                  <Select
+                     labelId="label"
+                     fullWidth
+                     value={select}
+                     onChange={handleSelect}
+                  >
 
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            sx={{ mt: 3, mb: 2 }}
-                        >
-                            Submit
-                        </Button>
+                     {plans.map(plan => <MenuItem value={plan.id} key={plan.id}> {plan.amount}$ per {plan.duration}</MenuItem>)}
 
-                        {success ? <Success /> : null}
-                    </Box>
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        sx={{ mt: 3, mb: 2 }}
-                        color='error'
-                        onClick={handleClick}
-                    >
-                        Cancel your subscription
-                    </Button>
-                </Box>
-            </Container>
-        </ThemeProvider>
-    );
+                  </Select>
+
+                  <TextField
+                     margin="normal"
+                     required
+                     fullWidth
+                     id="card"
+                     label="card number"
+                     name="card"
+                     defaultValue={current.card}
+                  />
+
+                  <Button
+                     type="submit"
+                     fullWidth
+                     variant="contained"
+                     sx={{ mt: 3, mb: 2 }}
+                  >
+                     Submit
+                  </Button>
+
+                  {success ? <Success /> : null}
+               </Box>
+               <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 }}
+                  color='error'
+                  onClick={handleClick}
+               >
+                  Cancel your subscription
+               </Button>
+            </Box>
+         </Container>
+      </ThemeProvider>
+   );
 }

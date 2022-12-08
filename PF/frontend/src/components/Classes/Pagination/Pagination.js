@@ -16,4 +16,19 @@ const SchedulePagination = ({ lastpage, query, setQuery }) => {
 	);
 };
 
+const UserSchedulePagination = ({ lastpage, setOffset }) => {
+	return (
+		<Pagination
+			className="schedule-pagination"
+			count={lastpage}
+			defaultPage={1}
+			onChange={(event, value) => {
+				setOffset((value - 1) * 10);
+			}}
+		/>
+	);
+};
+
 export default SchedulePagination;
+
+export { UserSchedulePagination };

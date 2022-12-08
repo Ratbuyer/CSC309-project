@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ScheduleTable from '../ScheduleTable/ScheduleTable';
 import { useNavigate } from 'react-router-dom';
-import SchedulePagination from '../Pagination/Pagination';
+import { UserSchedulePagination } from '../Pagination/Pagination';
 
 const UserSchedule = () => {
 	const [classes, setClasses] = useState([]);
@@ -43,9 +43,8 @@ const UserSchedule = () => {
 				reload={reload}
 				setReload={setReload}
 			/>
-			<SchedulePagination
+			<UserSchedulePagination
 				lastpage={Math.ceil(totalItem / 10)}
-				offset={offset}
 				setOffset={setOffset}
 			/>
 		</>

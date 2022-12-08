@@ -8,6 +8,8 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DropEvent from './DropEvent';
 import { useNavigate } from 'react-router-dom';
 
+import './DropDialog.css';
+
 function DropDialog({ session, reload, setReload, setShowSnackbar }) {
 	const [open, setOpen] = React.useState(false);
 

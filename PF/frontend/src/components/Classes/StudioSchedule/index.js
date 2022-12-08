@@ -167,6 +167,12 @@ const StudioSchedule = () => {
 	return (
 		<>
 			<h1 className="schedule-title">Class Schedule</h1>
+			{classes.length === 0 ? (
+				<h2 className="no-class-messages">
+					Sorry, there are no classes available in this studio.
+				</h2>
+			) : null}
+
 			<SearchStack query={query} setQuery={setQuery} />
 			<ScheduleTable
 				className="schedule-table"

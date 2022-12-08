@@ -9,6 +9,8 @@ import EnrollClass from '../Enroll/EnrollClass';
 import DropClass from '../Drop/DropClass';
 import { useNavigate } from 'react-router-dom';
 
+import './ScheduleTable.css';
+
 function ScheduleDialogAction({
 	session,
 	handleClose,
@@ -21,7 +23,6 @@ function ScheduleDialogAction({
 	return (
 		<>
 			<DialogContent>
-				<hr></hr>
 				<DialogContentText>
 					Would you like to enroll or drop all future sessions of this class?
 				</DialogContentText>
@@ -44,7 +45,7 @@ function ScheduleDialogAction({
 					Enroll All
 				</Button>
 				<Button
-					variant="contained"
+					variant="outlined"
 					color="error"
 					onClick={() => {
 						DropClass(
@@ -77,7 +78,6 @@ function StudioDialogAction({
 	return (
 		<>
 			<DialogContent>
-				<hr></hr>
 				<DialogContentText>
 					Would you like to enroll all future sessions of this class?
 				</DialogContentText>
@@ -136,6 +136,19 @@ function SessionDialogAction({
 	}
 }
 
+const styles = {
+	dialog: {
+		// styles for the Dialog
+	},
+	dialogTitle: {
+		'font-weight': 'bold',
+		'font-size': '1.5rem',
+	},
+	dialogContent: {
+		// styles for the Dialog content
+	},
+};
+
 function SessionDialog({
 	session,
 	showDialog,
@@ -157,30 +170,39 @@ function SessionDialog({
 				onClose={handleClose}
 				aria-labelledby="alert-dialog-title"
 				aria-describedby="alert-dialog-description"
+				sx={{
+					'& .MuiDialog-paper': {
+						width: '100%',
+						maxWidth: '500px',
+						margin: '20px',
+					},
+				}}
+				classes={{
+					title: styles.dialogTitle,
+				}}
 			>
 				<DialogTitle id="alert-dialog-title">Class Information</DialogTitle>
-				<DialogContent>
-					<div>
-						<div>
+				<DialogContent dividers>
+					<div className="schedule-dialog-info">
+						<div className="schedule-dialog-time">
 							{session.start_time.slice(0, -3) +
 								' - ' +
 								session.end_time.slice(0, -3)}
 						</div>
-						<div>{session.classInfo.name}</div>
-						<div>{session.classInfo.description}</div>
-						<div>
-							Coach:
-							<span>{session.classInfo.coach}</span>
+						<div className="schedule-dialog-name">{session.classInfo.name}</div>
+						<div className="schedule-dialog-description">
+							{session.classInfo.description}
 						</div>
-						<div>
-							Category:
-							<span>{KeywordsToString(session.classInfo.keywords)}</span>
+						<div className="schedule-dialog-coach">
+							<strong>Coach:</strong> {session.classInfo.coach}
 						</div>
-						<div>
-							Availablity:
-							<span>
-								{session.classInfo.capacity - session.enrolled_num} spots left
-							</span>
+						<div className="schedule-dialog-category">
+							<strong>Category:</strong>{' '}
+							{KeywordsToString(session.classInfo.keywords)}
+						</div>
+						<div className="schedule-dialog-spots">
+							{session.classInfo.capacity - session.enrolled_num} spots
+							available!
 						</div>
 					</div>
 				</DialogContent>

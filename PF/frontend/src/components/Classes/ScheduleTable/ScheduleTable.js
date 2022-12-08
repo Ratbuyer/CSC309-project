@@ -7,7 +7,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import EnrollDialog from '../Enroll/EnrollDiaglog';
+import EnrollDialog from '../Enroll/EnrollDialog';
 import DropDialog from '../Drop/DropDialog';
 import SessionDialog from './SessionDialog';
 import ActionSnackbar from './ActionSnackbar';
@@ -96,7 +96,7 @@ function ScheduleTable({ classes, isUser, isHitory, reload, setReload }) {
 									{row.classInfo.name}
 								</TableCell>
 								<TableCell align="center">{row.classInfo.coach}</TableCell>
-								<TableCell align="center">
+								<TableCell align="center" style={{ width: 200 }}>
 									{KeywordsToString(row.classInfo.keywords)}
 								</TableCell>
 								<TableCell align="center">{row.date}</TableCell>

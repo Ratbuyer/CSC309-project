@@ -11,3 +11,41 @@
         font-weight: bold !important;
 }
 
+#alert-dialog-title {
+        font-size: 2rem;
+        font-weight: bold;
+        color: white;
+        background-color: coral
+}
+.schedule-dialog-time {
+        font-size: 2rem;
+        font-weight: bold;
+        color: coral;
+}
+
+.schedule-dialog-name {
+        margin-top: 30px;
+        font-size: 1.5rem;
+        font-weight: bold;
+}
+
+.schedule-dialog-description {
+        margin-top: 15px;
+        font-size: 1.1rem;
+}
+
+.schedule-dialog-coach {
+        margin-top: 30px;
+        font-size: 1rem;
+}
+
+.schedule-dialog-category {
+        margin-top: 10px;
+        font-size: 1rem;
+}
+
+.schedule-dialog-spots {
+        margin-top: 20px;
+        font-size: 1rem;
+        font-weight: bold;
+}

@@ -1,3 +1,3 @@
-# CSC309-project
+# Toronto Fitness Club Website
 To install all requirements run source startup.sh in PF folder.
 To start the website run source run.sh in PF folder.

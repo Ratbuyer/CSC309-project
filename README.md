@@ -26,5 +26,7 @@ Some screenshots from the website:
 ![ScreenShot](ScreenShots/studio1.png)
 ![ScreenShot](ScreenShots/profile.png)
 ![ScreenShot](ScreenShots/classes.png)
+![ScreenShot](ScreenShots/details.png)
 ![ScreenShot](ScreenShots/schedule.png)
 ![ScreenShot](ScreenShots/history.png)
+![ScreenShot](ScreenShots/admin.png)

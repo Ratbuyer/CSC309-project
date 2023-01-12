@@ -1,5 +1,5 @@
 # Toronto Fitness Club Website
-Requirements: Python3, pip, virtualenv and npm installed.
+Requirements: Python3, pip, virtualenv and node.js installed.
 
 
 To install all other requirements run
